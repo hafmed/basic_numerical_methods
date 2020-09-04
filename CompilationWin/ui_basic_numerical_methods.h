@@ -509,7 +509,7 @@ public:
 
         groupBox_15 = new QGroupBox(groupBox_16);
         groupBox_15->setObjectName(QString::fromUtf8("groupBox_15"));
-        groupBox_15->setGeometry(QRect(0, 100, 171, 161));
+        groupBox_15->setGeometry(QRect(0, 100, 161, 161));
         verticalLayout_3 = new QVBoxLayout(groupBox_15);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -1381,7 +1381,7 @@ public:
 
         retranslateUi(basic_numerical_methods);
 
-        tabWidget->setCurrentIndex(3);
+        tabWidget->setCurrentIndex(2);
         stackedWidget_gx_fprime->setCurrentIndex(0);
         stackedWidget_methodeeqtnonlineaire->setCurrentIndex(0);
         stackedWidget_methodeeqtdifferentielle->setCurrentIndex(1);

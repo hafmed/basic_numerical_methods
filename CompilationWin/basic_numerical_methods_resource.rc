@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\hafme\\Desktop\\2020_2021_Mint20_Win10\\For_Published_ver_1.9.0(1-9-2020)\\basic-numerical-methods-master\\src\\basic_numerical_methods.ico"
+IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\hafme\\Documents\\GitHub\\basic_numerical_methods\\src\\basic_numerical_methods.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 1,9,0,0

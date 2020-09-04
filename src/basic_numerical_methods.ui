@@ -54,7 +54,7 @@
      <enum>Qt::NoContextMenu</enum>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_tracage_fx">
      <attribute name="title">
@@ -909,7 +909,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>100</y>
-         <width>171</width>
+         <width>161</width>
          <height>161</height>
         </rect>
        </property>

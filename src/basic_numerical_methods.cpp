@@ -1,5 +1,5 @@
 ﻿// Les programmes Enseignement 14-15 / 19-20
-// HAFIANE Mohamed le 1-8-2020 V 1.5.10
+// HAFIANE Mohamed le 5-9-2020 V 1.9.0
 #include <QDesktopWidget>
 #include "fparser.hh"
 
