@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=App_HAF_Enseignebasic_numerical_methodsment_QT_HAF
+Comment=Application for basic_numerical_methods
+Exec=basic_numerical_methods
+Icon=default
+Categories=science;
+Terminal=false
+Name[en_US]=basic_numerical_methods.desktop
+X-AppImage-Version=

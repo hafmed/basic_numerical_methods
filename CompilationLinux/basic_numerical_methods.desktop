@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=basic_numerical_methods
+Categories=Utility;Education;Science;
+Comment=Application for basic numerical methods.
+Comment[en_US]=Application for basic numerical methods.
+Exec=basic_numerical_methods
+Icon=basic_numerical_methods
+Terminal=false
+Name[en_US]=basic_numerical_methods.desktop
+X-AppImage-Version=
+

@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/about.png</file>
+        <file>icons/application-exit.png</file>
+        <file>icons/Eqt_Cool.bmp</file>
+        <file>icons/go-next.png</file>
+        <file>icons/Integ.bmp</file>
+        <file>icons/logo.bmp</file>
+        <file>icons/basic_numerical_methods.png</file>
+        <file>icons/PointFixe.bmp</file>
+        <file>icons/Newton-Raphson.bmp</file>
+        <file>icons/secante.bmp</file>
+        <file>icons/Dicotomie.bmp</file>
+        <file>icons/Fausse-Position.bmp</file>
+        <file>icons/Euleur_explicite.bmp</file>
+        <file>icons/Rung_Kutta4.bmp</file>
+        <file>icons/Kutta_Merson.bmp</file>
+        <file>icons/log_universite_SAIDA.png</file>
+    </qresource>
+</RCC>
