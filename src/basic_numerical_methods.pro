@@ -13,7 +13,7 @@
 
 QT       += core gui
 CONFIG += c++17
-VERSION = 1.9.0  #5-9-2020
+VERSION = 3.0.9  #19-9-2020#19-5-2021#21-7-2021
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 QMAKE_CXXFLAGS += -std=c++17
@@ -26,7 +26,7 @@ TEMPLATE = app
 SOURCES += basic_numerical_methods.cpp \
     fparser.cc \
     fpoptimizer.cc \
- qcustomplot/qcustomplot.cpp \
+    qcustomplot/qcustomplot.cpp \
     main.cpp
 
 HEADERS  += basic_numerical_methods.h \

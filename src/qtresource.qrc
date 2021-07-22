@@ -16,5 +16,10 @@
         <file>icons/Rung_Kutta4.bmp</file>
         <file>icons/Kutta_Merson.bmp</file>
         <file>icons/log_universite_SAIDA.png</file>
+        <file>icons/PivotsGauss.bmp</file>
+        <file>icons/Gauss_Seidel.png</file>
+        <file>icons/Jacobi.png</file>
+        <file>icons/Lagrange.png</file>
+        <file>icons/Newton.bmp</file>
     </qresource>
 </RCC>

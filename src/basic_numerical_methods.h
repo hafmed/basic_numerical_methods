@@ -66,10 +66,45 @@ public:
     bool validdx_tracage=true;
     bool valida_integ=true;
     bool validb_integ=true;
-
     bool validDiametre=true;
     bool validRuguosite=true;
     bool validDebit=true;
+    ///// 29-6-2021
+    QStringList headtextH_SystEqtLineares;
+    QStringList headtextV_SystEqtLineares;
+    QMessageBox resultatsMessage;  //     ne pas utiliser    resultatsMessage.show();
+    QString outputtext;
+    int n;
+    int i;
+    int j;
+    int m;
+    int k;
+    int iter;
+    QStringList headtextH_SystEqtLineares_Gauss_Seidel;
+    QStringList headtextV_SystEqtLineares_Gauss_Seidel;
+    bool okToleranceReache_GaussSeidel;
+    double Maxe;
+    /////
+    double X0[21]={0};
+    /////
+    int indexRowPivotNul;
+    int indexRowDownPivotNul;
+    bool okpermutationrow;
+    QBrush fgBrush;
+    QBrush bgBrush;
+    double aold[21][21];
+    /////-5-7-2021
+    double xploy[21]={0};
+    double yploy[21]={0};
+    QStringList headtextV_ApproximationPolynomiale;
+    QStringList headtextH_ApproximationPolynomiale;
+    QTableWidgetItem* item;
+    double s[21+1];
+    double cof[21];
+    double phi,ff,b;
+    double f[21][21];
+    int id;
+
 
 private slots:
     void hafafficherColebrookWhite();
@@ -130,6 +165,22 @@ private slots:
     void textChangedin_Diametre();
     void textChangedin_Ruguosite();
     void textChangedin_Debit();
+    /////
+    void resize_tableWidget_donnees_SysteqtsLineaires(int n);
+    void hafresolutionsysteqtlineaire_Gauss();
+    void hafresolutionsysteqtlineaire_Gauss_Seidel();
+    void hafresolutionsysteqtlineaire_Jacobi();
+    /////29-6-2021
+    void choixmethodeSystEqtLineares(int id);
+    void hafresolutionSystEqtLineares();
+    void on_PushButonClicked();
+    /////5-7-2021
+    void resize_tableWidget_donnees_ApproximationPolynomiale(int n);
+    void choixmethodeApproximationPolynomiale(int id);
+    void hafcalculApproximationPolynomiale();
+    void hafcalculApproximationPolynomiale_Lagrange();
+    void hafcalculApproximationPolynomiale_Newton();
+
 
 };
 
