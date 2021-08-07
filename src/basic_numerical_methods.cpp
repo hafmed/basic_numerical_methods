@@ -1,5 +1,6 @@
 ﻿// Les programmes Enseignement 14-15 / 19-20 /20-21 29-06-2021
 // HAFIANE Mohamed le 5-9-2020 V 1.9.0
+// HAFIANE Mohamed le 1-8-2021 V 3.0.10
 //#include <QDesktopWidget>
 #include "fparser.hh"
 #include <iostream>
@@ -14,7 +15,8 @@
 #include <math.h>
 #include <QRegularExpression>
 /////---- 21-7-201 ----
-#include <iostream>#include <cmath>
+#include <iostream>
+#include <cmath>
 #include <stdio.h>
 using namespace std;
 #include <limits>
@@ -79,12 +81,12 @@ basic_numerical_methods::basic_numerical_methods(QWidget *parent)
     connect(lineEdit_x0, SIGNAL(textChanged(const QString)), this, SLOT(textChangedinx0()));
     connect(lineEdit_x1, SIGNAL(textChanged(const QString)), this, SLOT(textChangedinx1()));
     connect(lineEdit_tolerance_eqtnonlineaire, SIGNAL(textChanged(const QString)), this, SLOT(textChangedintolerance()));
-    fparserfx.AddConstant("pi", 3.1415926535897932);
-    fparsergx.AddConstant("pi", 3.1415926535897932);
-    fparserfprime.AddConstant("pi", 3.1415926535897932);
-    fparserfprimex.AddConstant("pi", 3.1415926535897932);
-    fparseryprim.AddConstant("pi", 3.1415926535897932);
-    fparserfxintegrale.AddConstant("pi", 3.1415926535897932);
+    fparserfx.AddConstant("pi", M_PI);
+    fparsergx.AddConstant("pi", M_PI);
+    fparserfprime.AddConstant("pi", M_PI);
+    fparserfprimex.AddConstant("pi", M_PI);
+    fparseryprim.AddConstant("pi", M_PI);
+    fparserfxintegrale.AddConstant("pi", M_PI);
     //
     connect(lineEdit_yprime_methodeeqtdifferentielle, SIGNAL(textChanged(const QString)), this, SLOT(textChangedinfunctionyprim()));
     connect(lineEdit_a_methodeeqtdifferentielle, SIGNAL(textChanged(const QString)), this, SLOT(textChangedin_a_methodeeqtdifferentielle()));
@@ -118,8 +120,7 @@ basic_numerical_methods::basic_numerical_methods(QWidget *parent)
     // ver 3 -25-6-2021
     connect(spinBox_nbre_eqts, SIGNAL(valueChanged(int )), this, SLOT(resize_tableWidget_donnees_SysteqtsLineaires(int )));
     tableWidget_donnees_SysteqtsLineaires->resizeColumnsToContents();
-    label_tolerance_methodeSystEqtLineares->hide();
-    lineEdit_tolerance_SystEqtLineares->hide();
+    groupBox_tolerance_methodeSystEqtLineares->hide();
     groupBox_nbreItera->hide();
     //
     connect(buttonGroup_methodeSystEqtLineares,SIGNAL(idClicked(int)), this, SLOT(choixmethodeSystEqtLineares(int)));
@@ -192,8 +193,8 @@ void basic_numerical_methods::hafcalculApproximationPolynomiale_Lagrange()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             ApproximationPolynomiale_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau!");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau!"));
             goto fin5;
         }
         else /* the cell is empty */
@@ -204,8 +205,8 @@ void basic_numerical_methods::hafcalculApproximationPolynomiale_Lagrange()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             ApproximationPolynomiale_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau!");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau!"));
             goto fin5;
         }
         else /* the cell is empty */
@@ -245,22 +246,22 @@ void basic_numerical_methods::hafcalculApproximationPolynomiale_Lagrange()
     id=buttonGroup_methodeApproximationPolynomiale->checkedId();
     switch (id) {
     case -2:
-        outputtext+="Les coefficients du polynôme de Lagrange sont :\n";
+        outputtext+=tr("Les coefficients du polynôme de Lagrange sont :\n");
         break;
     case -3:
-        outputtext+="Les coefficients du polynôme de Newton sont :\n";
+        outputtext+=tr("Les coefficients du polynôme de Newton sont :\n");
         break;
     }
     for (i=m; i>=0; i--){
         if (abs(cof[i])<numeric_limits<double>::epsilon()
                 || cof[i]-(int)(cof[i]/
-         numeric_limits<double>::epsilon())*numeric_limits<double>::epsilon()==0) cof[i]=0; // pb mulitple de eps (fmod)c++ 21-7-2021
+                                numeric_limits<double>::epsilon())*numeric_limits<double>::epsilon()==0) cof[i]=0; // pb mulitple de eps (fmod)c++ 21-7-2021
     }
     for(i=m; i>=0; i--){
         outputtext+="coef["+QString::number(m-i+1)+"]="+QString::number(cof[i])+"  ";
     }
     outputtext+="\n";
-    outputtext+="Le polynôme est : P"+QString::number(m)+"(x)=";
+    outputtext+=tr("Le polynôme est : P")+QString::number(m)+"(x)=";
     for(i=m; i>=0; i--){
         if (cof[i]>0 && i!=m && !(cof[i+1]==0 && i!=0)) outputtext+="+";
         if (cof[i]!=0 && QString::number(cof[i])!="1" && QString::number(cof[i])!="-1"){
@@ -453,8 +454,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
             if (!item || item->text().isEmpty()) /* the cell is not empty */
             {
                 SysteqtsLineaires_textBrowser->clear();
-                resultatsMessage.warning(this, "Erreur données",
-                                         "Veuillez remplire complètement le tableau! A.X=b");
+                resultatsMessage.warning(this, tr("Erreur données"),
+                                         tr("Veuillez remplir complètement le tableau! A.X=b"));
                 tableWidget_matrice_triangulaire_sup->clearContents();
                 goto fin4;
             }
@@ -470,8 +471,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             SysteqtsLineaires_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau! A.X=b");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau! A.X=b"));
             goto fin4;
         }
         else /* the cell is empty */
@@ -485,8 +486,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             SysteqtsLineaires_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau! A.X=b");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau! A.X=b"));
             goto fin4;
         }
         else /* the cell is empty */
@@ -500,7 +501,7 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
     }
     headtextH_SystEqtLineares_Gauss_Seidel+="MaxErreur";
     //cout << "\nEnter the no. of iteration : ";
-    outputtext="La solution du système par la méthode de Jacobi est :\n";
+    outputtext=tr("La solution du système par la méthode de Jacobi est :\n");
 
     q=spinBox_nbre_itera->value();
     iter=0;
@@ -554,20 +555,20 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
     tableWidget_Resultats_Gauss_Seidel->resizeColumnsToContents();
 
     if (okToleranceReache_GaussSeidel && !std::isnan(Maxe)){
-        resultatsMessage.information(this, "Résultats",
-                                     "La condition de tolérance est bien respectée aprés "+
-                                     QString::number(iter,'i',0)+ " itérations!");
+        resultatsMessage.information(this, tr("Résultats"),
+                                     tr("La condition de tolérance est bien respectée aprés ")+
+                                     QString::number(iter,'i',0)+ tr(" itérations!"));
         for (i = 0; i < n; i++) {
             outputtext+="x"+QString::number(i+1)+"="+QString::number(x[i])+"   ";
         }
-        outputtext+="\napès "+QString::number(iter,'i',0)+ " itérations!";
+        outputtext+=tr("\naprès ")+QString::number(iter,'i',0)+ tr(" itérations!");
         SysteqtsLineaires_textBrowser->setText(outputtext);
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                             "Vérifier la condition de convergence de la méthode "
-                             "ou augmenter le nombre maximal d'itérations!.");
+                             "ou augmenter le nombre maximal d'itérations!."));
     }
     for (i = 0; i < n; i++) {
         tableWidget_Resultats_Gauss_Seidel->item(iter,i)->setBackground(Qt::red);
@@ -595,8 +596,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
             if (!item || item->text().isEmpty()) /* the cell is not empty */
             {
                 SysteqtsLineaires_textBrowser->clear();
-                resultatsMessage.warning(this, "Erreur données",
-                                         "Veuillez remplire complètement le tableau! A.X=b");
+                resultatsMessage.warning(this, tr("Erreur données"),
+                                         tr("Veuillez remplir complètement le tableau! A.X=b"));
                 tableWidget_matrice_triangulaire_sup->clearContents();
                 goto fin3;
             }
@@ -612,8 +613,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             SysteqtsLineaires_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau! A.X=b");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau! A.X=b"));
             goto fin3;
         }
         else /* the cell is empty */
@@ -627,8 +628,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
         if (!item || item->text().isEmpty()) /* the cell is not empty */
         {
             SysteqtsLineaires_textBrowser->clear();
-            resultatsMessage.warning(this, "Erreur données",
-                                     "Veuillez remplire complètement le tableau! A.X=b");
+            resultatsMessage.warning(this, tr("Erreur données"),
+                                     tr("Veuillez remplir complètement le tableau! A.X=b"));
             goto fin3;
         }
         else /* the cell is empty */
@@ -642,7 +643,7 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
     }
     headtextH_SystEqtLineares_Gauss_Seidel+="MaxErreur";
     //cout << "\nEnter the no. of iteration : ";
-    outputtext="La solution du système par la méthode de Gauss-Seidel est :\n";
+    outputtext=tr("La solution du système par la méthode de Gauss-Seidel est :\n");
 
     q=spinBox_nbre_itera->value();
     iter=0;
@@ -681,7 +682,7 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
         for (i = 0; i < n; i++) {
             tableWidget_Resultats_Gauss_Seidel->setItem(iter,i,new QTableWidgetItem(QString::number(x[i])));
         }
-        headtextV_SystEqtLineares_Gauss_Seidel+="Itér("+ QString::number(iter-1)+")";
+        headtextV_SystEqtLineares_Gauss_Seidel+=tr("Itér(")+ QString::number(iter-1)+")";
         tableWidget_Resultats_Gauss_Seidel->setItem(iter,n,new QTableWidgetItem(QString::number(Maxe)));
 
         if (Maxe<lineEdit_tolerance_SystEqtLineares->text().toFloat()){
@@ -692,27 +693,27 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
         }
     }
     //*Affichage des résultats*//
-    headtextV_SystEqtLineares_Gauss_Seidel+="Itér("+ QString::number(iter)+")";
+    headtextV_SystEqtLineares_Gauss_Seidel+=tr("Itér(")+ QString::number(iter)+")";
 
     tableWidget_Resultats_Gauss_Seidel->setHorizontalHeaderLabels(headtextH_SystEqtLineares_Gauss_Seidel);
     tableWidget_Resultats_Gauss_Seidel->setVerticalHeaderLabels(headtextV_SystEqtLineares_Gauss_Seidel);
     tableWidget_Resultats_Gauss_Seidel->resizeColumnsToContents();
 
     if (okToleranceReache_GaussSeidel && !std::isnan(Maxe)){
-        resultatsMessage.information(this, "Résultats",
-                                     "La condition de tolérance est bien respectée aprés "+
-                                     QString::number(iter,'i',0)+ " itérations!");
+        resultatsMessage.information(this, tr("Résultats"),
+                                     tr("La condition de tolérance est bien respectée aprés ")+
+                                     QString::number(iter,'i',0)+ tr(" itérations!"));
         for (i = 0; i < n; i++) {
             outputtext+="x"+QString::number(i+1)+"="+QString::number(x[i])+"   ";
         }
-        outputtext+="\napès "+QString::number(iter,'i',0)+ " itérations!";
+        outputtext+=tr("\naprès ")+QString::number(iter,'i',0)+ tr(" itérations!");
         SysteqtsLineaires_textBrowser->setText(outputtext);
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                             "Vérifier la condition de convergence de la méthode "
-                             "ou augmenter le nombre maximal d'itérations!.");
+                             "ou augmenter le nombre maximal d'itérations!."));
     }
     for (i = 0; i < n; i++) {
         tableWidget_Resultats_Gauss_Seidel->item(iter,i)->setBackground(Qt::red);
@@ -738,10 +739,10 @@ void basic_numerical_methods::hafresolutionSystEqtLineares()
                 if (!item || item->text().isEmpty()) /* the cell is not empty */
                 {
                     SysteqtsLineaires_textBrowser->clear();
-                    resultatsMessage.warning(this, "Erreur données",
-                                             "Veuillez remplire complètement le tableau! A.X=b");
+                    resultatsMessage.warning(this, tr("Erreur données"),
+                                             tr("Veuillez remplir complètement le tableau! A.X=b"));
                     tableWidget_matrice_triangulaire_sup->clearContents();
-                    break;
+                    goto finGauss;
                 }
                 else /* the cell is empty */
                 {
@@ -751,6 +752,7 @@ void basic_numerical_methods::hafresolutionSystEqtLineares()
         }
         hafresolutionsysteqtlineaire_Gauss();
         stackedWidget_choixmethodeSystEqtLineares->setCurrentIndex(0);
+finGauss:;
         break;
 
     case -3:
@@ -774,8 +776,7 @@ void basic_numerical_methods::choixmethodeSystEqtLineares(int id)
     case -2:
         tableWidget_donnees_SysteqtsLineaires->setColumnCount(n+1);
         stackedWidget_choixmethodeSystEqtLineares->setCurrentIndex(1);
-        label_tolerance_methodeSystEqtLineares->hide();
-        lineEdit_tolerance_SystEqtLineares->hide();
+        groupBox_tolerance_methodeSystEqtLineares->hide();
         groupBox_nbreItera->hide();
         progressBar_SysteqtsLineaires->hide();
         break;
@@ -783,8 +784,7 @@ void basic_numerical_methods::choixmethodeSystEqtLineares(int id)
     case -3:
         tableWidget_donnees_SysteqtsLineaires->setColumnCount(n+2);
         stackedWidget_choixmethodeSystEqtLineares->setCurrentIndex(2);
-        label_tolerance_methodeSystEqtLineares->show();
-        lineEdit_tolerance_SystEqtLineares->show();
+        groupBox_tolerance_methodeSystEqtLineares->show();
         groupBox_nbreItera->show();
         progressBar_SysteqtsLineaires->show();
         break;
@@ -792,8 +792,7 @@ void basic_numerical_methods::choixmethodeSystEqtLineares(int id)
     case -4:
         tableWidget_donnees_SysteqtsLineaires->setColumnCount(n+2);
         stackedWidget_choixmethodeSystEqtLineares->setCurrentIndex(4);
-        label_tolerance_methodeSystEqtLineares->show();
-        lineEdit_tolerance_SystEqtLineares->show();
+        groupBox_tolerance_methodeSystEqtLineares->show();
         groupBox_nbreItera->show();
         progressBar_SysteqtsLineaires->show();
         break;
@@ -817,8 +816,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
             if (!item || item->text().isEmpty()) /* the cell is not empty */
             {
                 SysteqtsLineaires_textBrowser->clear();
-                resultatsMessage.warning(this, "Erreur données",
-                                         "Veuillez remplire complètement le tableau! A.X=b");
+                resultatsMessage.warning(this, tr("Erreur données"),
+                                         tr("Veuillez remplir complètement le tableau! A.X=b"));
                 tableWidget_matrice_triangulaire_sup->clearContents();
                 goto fin2;
             }
@@ -851,8 +850,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
                     }
                 }
             }
-            resultatsMessage.critical(this, "Erreur!",
-                                      "Pivot nul! Essayer de permuter les lignes en cliquant sur le bouton de dessous.");
+            resultatsMessage.critical(this, tr("Erreur!"),
+                                      tr("Pivot nul! Essayer de permuter les lignes en cliquant sur le bouton de dessous."));
             pushButton_mouveRow->show();
             pushButton_Calculer_methodeSystEqtLineares->hide();
             goto fin2;
@@ -864,8 +863,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
             if (j<i) {
                 //if (QString::number(a[i][j]) == "1.77636e-15")  a[i][j]=0; // pb dans Manjaro (Qt5.15.2) et Win10 (Qt6.2.0)
                 if (abs(a[i][j])<numeric_limits<double>::epsilon()
-                                || a[i][j]-(int)(a[i][j]/
-                         numeric_limits<double>::epsilon())*numeric_limits<double>::epsilon()==0) a[i][j]=0;// pb mulitple de eps (fmod)c++ 21-7-2021
+                        || a[i][j]-(int)(a[i][j]/
+                                         numeric_limits<double>::epsilon())*numeric_limits<double>::epsilon()==0) a[i][j]=0;// pb mulitple de eps (fmod)c++ 21-7-2021
                 tableWidget_matrice_triangulaire_sup->item(i,j)->setBackground(Qt::red);
             }
         }
@@ -883,8 +882,8 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
     if(a[n-1][n-1]==0) {
         SysteqtsLineaires_textBrowser->clear();
         //tableWidget_matrice_triangulaire_sup->clearContents();
-        resultatsMessage.critical(this, "Erreur!",
-                                  "Pivot nul! Essayer de permuter les lignes en cliquant sur le bouton de dessous. ");
+        resultatsMessage.critical(this, tr("Erreur!"),
+                                  tr("Pivot nul! Essayer de permuter les lignes en cliquant sur le bouton de dessous."));
         pushButton_mouveRow->show();
         pushButton_Calculer_methodeSystEqtLineares->hide();
         goto fin2;
@@ -895,7 +894,7 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
             c=c+a[i][j]*x[j];}
         x[i]=(a[i][n]-c)/a[i][i];}
     //*Affichage des résultats*//
-    outputtext+="La solution du système par la méthode du pivot de Gauss est :\n";
+    outputtext+=tr("La solution du système par la méthode du pivot de Gauss est :\n");
     for(i=0;i<n;i++){
         outputtext+="X"+QString::number(i+1)+"="+QString::number(x[i])+"\n";
     }
@@ -1247,7 +1246,7 @@ void basic_numerical_methods::textChangedin_a_methodeeqtdifferentielle()
 void basic_numerical_methods::textChangedinfunctionyprim()
 {
     yprim=lineEdit_yprime_methodeeqtdifferentielle->text();
-    fparseryprim.AddConstant("pi", 3.1415926535897932);
+    fparseryprim.AddConstant("pi", M_PI);
     int res = fparseryprim.Parse(yprim.toStdString(), "x,y");
 
     if(res > -1)
@@ -1263,37 +1262,37 @@ void basic_numerical_methods::textChangedinfunctionyprim()
         lineEdit_yprime_methodeeqtdifferentielle->setPalette(QApplication::style()->standardPalette());
     }
 }
-void basic_numerical_methods::EvalErrorfunHAF(int fparser_EvalError, QString fx, double x)
+void basic_numerical_methods::EvalErrorfunHAF(int fparser_EvalError, QString fx, double x,int ndecimaux)
 {
     QString message;
     if (fparser_EvalError!=0){
         switch (fparser_EvalError) {
         case 1:
-            message="division by zero";
+            message=tr("division par zéro");
             break;
         case 2:
-            message="sqrt error (sqrt of a negative value)";
+            message=tr("erreur sqrt (sqrt d'une valeur négative)");
             break;
         case 3:
-            message="log error (logarithm of a negative value)";
+            message=tr("erreur log (logarithme d'une valeur négative)");
             break;
         case 4:
-            message="trigonometric error (asin or acos of illegal value)";
+            message=tr("erreur trigonométrique (asin ou acos d'une valeur incorrecte ; non comprise entre -1 et 1)");
             break;
         case 5:
-            message="maximum recursion level in eval() reached";
+            message=tr("niveau de récursivité maximum dans eval() atteint");
             break;
         }
-        int ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
-        message+=" in x="+QString::number(x,'f',ndecimaux);
-        resultatsMessage.critical(this, "Error in "+ QString("%1").arg(fx),message);
+        //ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
+        message+=tr(" dans x=")+QString::number(x,'f',ndecimaux);
+        resultatsMessage.critical(this, tr("Erreur dans ")+ QString("%1").arg(fx),message);
         return;
     }
 }
 void basic_numerical_methods::textChangedinfunctionfx()
 {
     fx=lineEdit_fx_eqt_non_lineaire->text();
-    fparserfx.AddConstant("pi", 3.1415926535897932);
+    fparserfx.AddConstant("pi", M_PI);
     int res = fparserfx.Parse(fx.toStdString(), "x");
 
     if(res > -1)
@@ -1314,7 +1313,7 @@ void basic_numerical_methods::textChangedinfunctionfx()
 void basic_numerical_methods::textChangedinfunctiongx()
 {
     gx=lineEdit_gx_eqt_non_lineaire->text();
-    fparsergx.AddConstant("pi", 3.1415926535897932);
+    fparsergx.AddConstant("pi", M_PI);
     int res = fparsergx.Parse(gx.toStdString(), "x");
     if(res > -1)
     {
@@ -1334,7 +1333,7 @@ void basic_numerical_methods::textChangedinfunctiongx()
 void basic_numerical_methods::textChangedinfunctionfprime()
 {
     fprime=lineEdit_fprime_eqt_non_lineaire->text();
-    fparserfprime.AddConstant("pi", 3.1415926535897932);
+    fparserfprime.AddConstant("pi", M_PI);
     int res = fparserfprime.Parse(fprime.toStdString(), "x");
     if(res > -1)
     {
@@ -1412,15 +1411,13 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
 {
     progressBar_eqtdifferentielle->setValue(0);
 
-    double valsa[1];
-    double valsb[1];
     while(true)
     {
         yprim=lineEdit_yprime_methodeeqtdifferentielle->text();
         int res = fparseryprim.Parse(yprim.toStdString(), "x,y");
         if(res < 0) break;
         if (strlen(fparseryprim.ErrorMsg())!=0){
-            resultatsMessage.critical(this, "Error in f(x,y)",
+            resultatsMessage.critical(this, tr("Erreur dans f(x,y)"),
                                       fparseryprim.ErrorMsg());
             // break ;
             return ; // HAF 1-8-2020
@@ -1438,7 +1435,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
     tableWidget_donnees_eqtdifferentielle->setHorizontalHeaderLabels(headtext);
     double a=lineEdit_a_methodeeqtdifferentielle->text().toDouble();
     double b=lineEdit_b_methodeeqtdifferentielle->text().toDouble();
-    int ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
     n=spinBox_nptseqtdifferentielle->text().toInt();
     progressBar_eqtdifferentielle->setMaximum(n);
     double dx=(b-a)/(n-1);
@@ -1454,13 +1451,13 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
     for (i = 1 ; i <n ; i++){
         x[i]=x[0]+i*dx;
     }
-    double error_truncation[n];
+
     for (i=1; i<n; i++){
         progressBar_eqtdifferentielle->setValue(i);
         double variablesk1[2] = {x[i-1],y[i-1]};
         k1=1./3*dx*fparseryprim.Eval(variablesk1);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1469,7 +1466,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
         double variablesk2[2] = {x[i-1],y[i-1]+k1};
         k2=1./3*dx*fparseryprim.Eval(variablesk2);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1478,7 +1475,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
         double variablesk3[2] = {x[i-1],y[i-1]+k2/2+k2/2};
         k3=1./3*dx*fparseryprim.Eval(variablesk3);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1487,7 +1484,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
         double variablesk4[2] = {x[i-1],y[i-1]+3./8*k1+9./3*k3};
         k4=1./3*dx*fparseryprim.Eval(variablesk4);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1496,7 +1493,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Kutta_Merson()
         double variablesk5[2] = {x[i-1],y[i-1]+3./2*k1-9./2*k3+6*k4};
         k5=1./3*dx*fparseryprim.Eval(variablesk5);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1519,15 +1516,13 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
 {
     progressBar_eqtdifferentielle->setValue(0);
 
-    double valsa[1];
-    double valsb[1];
     while(true)
     {
         yprim=lineEdit_yprime_methodeeqtdifferentielle->text();
         int res = fparseryprim.Parse(yprim.toStdString(), "x,y");
         if(res < 0) break;
         if (strlen(fparseryprim.ErrorMsg())!=0){
-            resultatsMessage.critical(this, "Error in f(x,y)",
+            resultatsMessage.critical(this, tr("Erreur dans f(x,y)"),
                                       fparseryprim.ErrorMsg());
             // break ;
             return ; // HAF 1-8-2020
@@ -1545,7 +1540,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
     tableWidget_donnees_eqtdifferentielle->setHorizontalHeaderLabels(headtext);
     double a=lineEdit_a_methodeeqtdifferentielle->text().toDouble();
     double b=lineEdit_b_methodeeqtdifferentielle->text().toDouble();
-    int ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
     n=spinBox_nptseqtdifferentielle->text().toInt();
     progressBar_eqtdifferentielle->setMaximum(n);
     double dx=(b-a)/(n-1);
@@ -1566,7 +1561,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
         double variablesk1[2] = {x[i-1],y[i-1]};
         k1=dx*fparseryprim.Eval(variablesk1);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i);
             break;
@@ -1574,7 +1569,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
         double variablesk2[2] = {x[i-1]+dx/2,y[i-1]+k1/2};
         k2=dx*fparseryprim.Eval(variablesk2);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx/2);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx/2,ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i);
             break;
@@ -1582,7 +1577,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
         double variablesk3[2] = {x[i-1]+dx/2,y[i-1]+k2/2};
         k3=dx*fparseryprim.Eval(variablesk3);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx/2);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx/2,ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i);
             break;
@@ -1590,7 +1585,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Runge_Kutta()
         double variablesk4[2] = {x[i-1]+dx,y[i-1]+k3};
         k4=dx*fparseryprim.Eval(variablesk4);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]+dx,ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i);
             break;
@@ -1616,7 +1611,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Euler_explicite()
         int res = fparseryprim.Parse(yprim.toStdString(), "x,y");
         if(res < 0) break;
         if (strlen(fparseryprim.ErrorMsg())!=0){
-            resultatsMessage.critical(this, "Error in f(x,y)",
+            resultatsMessage.critical(this, tr("Erreur dans f(x,y)"),
                                       fparseryprim.ErrorMsg());
             // break ;
             return ; // HAF 1-8-2020
@@ -1634,7 +1629,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Euler_explicite()
     tableWidget_donnees_eqtdifferentielle->setHorizontalHeaderLabels(headtext);
     double a=lineEdit_a_methodeeqtdifferentielle->text().toDouble();
     double b=lineEdit_b_methodeeqtdifferentielle->text().toDouble();
-    int ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtdifferentielle->text().toInt();
     n=spinBox_nptseqtdifferentielle->text().toInt();
     progressBar_eqtdifferentielle->setMaximum(n);
     double dx=(b-a)/(n-1);
@@ -1654,7 +1649,7 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle_Euler_explicite()
         double variables[] = {x[i-1],y[i-1]};
         y[i]=y[i-1]+dx*fparseryprim.Eval(variables);
         fparseryprim_EvalError=fparseryprim.EvalError();
-        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1]);
+        EvalErrorfunHAF(fparseryprim_EvalError,"f(x,y)",x[i-1],ndecimaux);
         if(fparseryprim_EvalError!=0) {
             tableWidget_donnees_eqtdifferentielle->removeRow(i-1);
             i-=1;
@@ -1710,8 +1705,8 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle()
         if (valida_eqtdifferentielle && validb_eqtdifferentielle && validy0_eqtdifferentielle){
             hafresolutioneqtdifferentielle_Euler_explicite();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez a ou/et b ou/et y0");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez a ou/et b ou/et y0"));
         }
         break;
 
@@ -1719,8 +1714,8 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle()
         if (valida_eqtdifferentielle && validb_eqtdifferentielle && validy0_eqtdifferentielle){
             hafresolutioneqtdifferentielle_Runge_Kutta();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez a ou/et b ou/et y0");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez a ou/et b ou/et y0"));
         }
         break;
 
@@ -1728,8 +1723,8 @@ void basic_numerical_methods::hafresolutioneqtdifferentielle()
         if (valida_eqtdifferentielle && validb_eqtdifferentielle && validy0_eqtdifferentielle){
             hafresolutioneqtdifferentielle_Kutta_Merson();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez a ou/et b ou/et y0");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez a ou/et b ou/et y0"));
         }
         break;
     }
@@ -1767,7 +1762,7 @@ void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
         lineEdit_x1->hide();
         label_x1->hide();
         label_x0->setText("x0");
-        lineEdit_tolerance_eqtnonlineaire->setToolTip("f(xi)<=Tolérance");
+        lineEdit_tolerance_eqtnonlineaire->setToolTip(tr("f(xi)<=Tolérance"));
         break;
 
     case -3:
@@ -1779,7 +1774,7 @@ void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
         lineEdit_x1->hide();
         label_x1->hide();
         label_x0->setText("x0");
-        lineEdit_tolerance_eqtnonlineaire->setToolTip("f(xi)<=Tolérance");
+        lineEdit_tolerance_eqtnonlineaire->setToolTip(tr("f(xi)<=Tolérance"));
         break;
 
     case -4:
@@ -1789,7 +1784,7 @@ void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
         lineEdit_x1->show();
         label_x1->show();
         stackedWidget_gx_fprime->hide();
-        lineEdit_tolerance_eqtnonlineaire->setToolTip("f(xi)<=Tolérance");
+        lineEdit_tolerance_eqtnonlineaire->setToolTip(tr("f(xi)<=Tolérance"));
         break;
 
     case -5:
@@ -1799,7 +1794,7 @@ void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
         label_x0->setText("a");
         label_x1->setText("b");
         stackedWidget_gx_fprime->hide();
-        lineEdit_tolerance_eqtnonlineaire->setToolTip("(b-a)<=Tolérance");
+        lineEdit_tolerance_eqtnonlineaire->setToolTip(tr("(b-a)<=Tolérance"));
         break;
 
     case -6:
@@ -1809,7 +1804,7 @@ void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
         label_x0->setText("a");
         label_x1->setText("b");
         stackedWidget_gx_fprime->hide();
-        lineEdit_tolerance_eqtnonlineaire->setToolTip("f(r)<=Tolérance");
+        lineEdit_tolerance_eqtnonlineaire->setToolTip(tr("f(r)<=Tolérance"));
         break;
     }
 }
@@ -1837,10 +1832,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
 {
     progressBar_eqtnonlineaire->setValue(0);
 
-    double valsa[1];
-    double valsb[1];
-    double valsr[1];
-    int ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
     int nmax=spinBox_nmax_eqtnonlineaire->text().toInt();
     progressBar_eqtnonlineaire->setMaximum(nmax);
     double a=lineEdit_x0->text().toDouble();
@@ -1848,19 +1840,18 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     if(a==std::numeric_limits<double>::infinity() || a==-std::numeric_limits<double>::infinity() ||
             b==std::numeric_limits<double>::infinity() || b==-std::numeric_limits<double>::infinity()
             ){
-        QMessageBox::critical(this, "Erreur",
-                              "La valeur de a ou/et b dépasse les limites admissibles!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("La valeur de a ou/et b dépasse les limites admissibles!"));
         return ;
     }
     double eps=lineEdit_tolerance_eqtnonlineaire->text().toDouble();
-    double xm;
     while(true)
     {
         fx=lineEdit_fx_eqt_non_lineaire->text();
         int res = fparserfx.Parse(fx.toStdString(), "x");
         if(res < 0) break;
         if (strlen(fparserfx.ErrorMsg())!=0){
-            resultatsMessage.critical(this, "Error in f(x)",
+            resultatsMessage.critical(this, tr("Erreur dans f(x)"),
                                       fparserfx.ErrorMsg());
             // break ;
             return ; // HAF 1-8-2020
@@ -1881,18 +1872,18 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     valsb[0]=b;
     double fa=fparserfx.Eval(valsa);
     fparserfxa_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a);
+    EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a,ndecimaux);
     double fb=fparserfx.Eval(valsb);
     fparserfxb_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b);
+    EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b,ndecimaux);
     double r=b-fb*(a-b)/(fa-fb);
     valsr[0]=r;
     double faxfb=fa*fb;
 
     if ((faxfb>=0 || a>=b) && (fparserfxa_EvalError==0 && fparserfxb_EvalError==0))
     {
-        QMessageBox::critical(this, "Erreur",
-                              "Il faut que (f(a)*f(b)<0 ; a<b) et f(x) doit être monotone entre a et b!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Il faut que (f(a)*f(b)<0 ; a<b) et f(x) doit être monotone entre a et b!"));
         return ;
     }
 
@@ -1901,22 +1892,22 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     i=0;
     double fr=fparserfx.Eval(valsr);
     fparserfxr_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfxr_EvalError,"f(x=r)",r);
+    EvalErrorfunHAF(fparserfxr_EvalError,"f(x=r)",r,ndecimaux);
 
     while(fabs(fr)>eps && i<nmax && fparserfxr_EvalError==0)
     {
         progressBar_eqtnonlineaire->setValue(i);
         fa=fparserfx.Eval(valsa);
         fparserfxa_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a);
+        EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a,ndecimaux);
         fb=fparserfx.Eval(valsb);
         fparserfxb_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b);
+        EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b,ndecimaux);
         r=b-fb*(a-b)/(fa-fb);
         valsr[0]=r;
         fr=fparserfx.Eval(valsr);
         fparserfxr_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfxr_EvalError,"f(x=r)",r);
+        EvalErrorfunHAF(fparserfxr_EvalError,"f(x=r)",r,ndecimaux);
 
         fxaxfxr=fa*fr;
         fxbxfxr=fb*fr;
@@ -1943,22 +1934,22 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     nbrerow_tableWidget_donnees_eqtnonlineaire=i-1;
     if(fparserfxa_EvalError==0 && fparserfxb_EvalError==0 && fparserfxr_EvalError==0 && i<nmax && !std::isnan(r)&& !std::isnan(fparserfx.Eval(valsr)) && r!=std::numeric_limits<double>::infinity() && r!=-std::numeric_limits<double>::infinity()){
         tableWidget_donnees_eqtnonlineaire->setCurrentCell(i-1, 3);
-        resultatsMessage.information(this, "Résultats","La méthode converge vers x="+
+        resultatsMessage.information(this, tr("Résultats"),tr("La méthode converge vers x=")+
                                      QString::number(r,'f',ndecimaux));
         pushButton_Copier_TableauEqtNonLineaire->show();
     }else if(i>=nmax){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                                 "Peut-être que vous devez changer a ou/et b ou augmenter la tolérance ou le nombre maximal d'itérations!");
+                                 "Peut-être que vous devez changer a ou/et b ou augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfxa_EvalError!=0 || fparserfxb_EvalError!=0 || fparserfxr_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes!"));
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "La méthode diverge  "
-                                 ": Peut-être que vous devez changer a ou/et b");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("La méthode diverge  "
+                                 ": Peut-être que vous devez changer a ou/et b"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -1969,7 +1960,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
     double valsa[1];
     double valsb[1];
     double valsxm[1];
-    int ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
     int nmax=spinBox_nmax_eqtnonlineaire->text().toInt();
     progressBar_eqtnonlineaire->setMaximum(nmax);
     double a=lineEdit_x0->text().toDouble();
@@ -1977,12 +1968,11 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
     if(a==std::numeric_limits<double>::infinity() || a==-std::numeric_limits<double>::infinity() ||
             b==std::numeric_limits<double>::infinity() || b==-std::numeric_limits<double>::infinity()
             ){
-        QMessageBox::critical(this, "Erreur",
-                              "La valeur de a ou/et b dépasse les limites admissibles!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("La valeur de a ou/et b dépasse les limites admissibles!"));
         return ;
     }
     double eps=lineEdit_tolerance_eqtnonlineaire->text().toDouble();
-    double xm;
     while(true)
     {
         fx=lineEdit_fx_eqt_non_lineaire->text();
@@ -1991,7 +1981,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
         if (strlen(fparserfx.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f(x)",
+            errorMessage.critical(this, tr("Erreur dans f(x)"),
                                   fparserfx.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2015,17 +2005,17 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
 
     double fa=fparserfx.Eval(valsa);
     fparserfxa_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a);
+    EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a,ndecimaux);
     double fb=fparserfx.Eval(valsb);
     fparserfxb_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b);
+    EvalErrorfunHAF(fparserfxb_EvalError,"f(x=b)",b,ndecimaux);
 
     double faxfb=fa*fb;
 
     if ((faxfb>=0 || a>=b) && fparserfxa_EvalError==0 && fparserfxb_EvalError==0)
     {
-        QMessageBox::critical(this, "Erreur",
-                              "Il faut que (f(a)*f(b)<0 ; a<b) et f(x) doit être monotone entre a et b!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Il faut que (f(a)*f(b)<0 ; a<b) et f(x) doit être monotone entre a et b!"));
         return ;
     }
 
@@ -2041,10 +2031,10 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
         valsxm[0]=xm;
         fa=fparserfx.Eval(valsa);
         fparserfxa_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a);
+        EvalErrorfunHAF(fparserfxa_EvalError,"f(x=a)",a,ndecimaux);
         fm=fparserfx.Eval(valsxm);
         fparserfxm_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfxm_EvalError,"f(x=xm)",xm);
+        EvalErrorfunHAF(fparserfxm_EvalError,"f(x=xm)",xm,ndecimaux);
 
         fxmxfxa=fm*fa;
         tableWidget_donnees_eqtnonlineaire->setItem(i,0,new QTableWidgetItem(QString::number(i)));
@@ -2070,23 +2060,23 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
     nbrerow_tableWidget_donnees_eqtnonlineaire=i-1;
     if(fparserfxa_EvalError==0 && fparserfxb_EvalError==0 && fparserfxm_EvalError==0 && i<nmax && !std::isnan(xm) && !std::isnan(fparserfx.Eval(valsa))&& !std::isnan(fparserfx.Eval(valsb)) && xm!=std::numeric_limits<double>::infinity() && xm!=-std::numeric_limits<double>::infinity()){
         tableWidget_donnees_eqtnonlineaire->setCurrentCell(i-1, 3);
-        resultatsMessage.information(this, "Résultats","La méthode converge vers x="+
+        resultatsMessage.information(this, tr("Résultats"),tr("La méthode converge vers x=")+
                                      QString::number(xm,'f',ndecimaux));
         pushButton_Copier_TableauEqtNonLineaire->show();
     }else if(i>=nmax){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                             "Peut-être que vous devez changer a ou/et b ou "
-                                 "augmenter la tolérance ou le nombre maximal d'itérations!");
+                                 "augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfxa_EvalError!=0 || fparserfxb_EvalError!=0 || fparserfxm_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes!"));
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "La méthode diverge  "
-                                 ": Peut-être que vous devez changer a ou/et b");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("La méthode diverge  "
+                                 ": Peut-être que vous devez changer a ou/et b"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2096,7 +2086,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
 
     double valsi[1];
     double valsimoisun[1];
-    int ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
     int nmax=spinBox_nmax_eqtnonlineaire->text().toInt();
     progressBar_eqtnonlineaire->setMaximum(nmax);
     i=0;
@@ -2106,16 +2096,16 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
     if(x[0]==std::numeric_limits<double>::infinity() || x[0]==-std::numeric_limits<double>::infinity() ||
             x[1]==std::numeric_limits<double>::infinity() || x[1]==-std::numeric_limits<double>::infinity()
             ){
-        QMessageBox::critical(this, "Erreur",
-                              "La valeur de x0 ou/et x1 dépasse les limites admissibles!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("La valeur de x0 ou/et x1 dépasse les limites admissibles!"));
         return ;
     }
     double eps=lineEdit_tolerance_eqtnonlineaire->text().toDouble();
 
     if (x[0]==x[1])
     {
-        QMessageBox::critical(this, "Erreur",
-                              "Il faut que x0 soit différant de x1!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("Il faut que x0 soit différent de x1!"));
         return ;
     }
 
@@ -2127,7 +2117,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
         if (strlen(fparserfx.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f(x)",
+            errorMessage.critical(this, tr("Erreur dans f(x)"),
                                   fparserfx.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2150,14 +2140,14 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
     tableWidget_donnees_eqtnonlineaire->setItem(0,1,new QTableWidgetItem(QString::number(x[0],'f',ndecimaux)));
     tableWidget_donnees_eqtnonlineaire->setItem(0,2,new QTableWidgetItem(QString::number(fparserfx.Eval(valsi),'f',ndecimaux)));
     fparserfx_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfx_EvalError,"f(x=x[0])",x[0]);
+    EvalErrorfunHAF(fparserfx_EvalError,"f(x=x[0])",x[0],ndecimaux);
     valsi[0]=x[1];
     valsimoisun[0]=x[0];
     tableWidget_donnees_eqtnonlineaire->setItem(1,0,new QTableWidgetItem(QString::number(1)));
     tableWidget_donnees_eqtnonlineaire->setItem(1,1,new QTableWidgetItem(QString::number(x[1],'f',ndecimaux)));
     tableWidget_donnees_eqtnonlineaire->setItem(1,2,new QTableWidgetItem(QString::number(fparserfx.Eval(valsi),'f',ndecimaux)));
     fparserfx_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfx_EvalError,"f(x=x[1])",x[1]);
+    EvalErrorfunHAF(fparserfx_EvalError,"f(x=x[1])",x[1],ndecimaux);
     i=1;
     double valeurfxi;
     double valeurfximoisun;
@@ -2168,10 +2158,10 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
         valsimoisun[0]=x[i-1];
         valeurfximoisun=fparserfx.Eval(valsimoisun);
         fparserfx_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i-1]);
+        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i-1],ndecimaux);
         valeurfxi=fparserfx.Eval(valsi);
         fparserfx_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i]);
+        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i],ndecimaux);
         x[i+1]=x[i]-valeurfxi*(x[i]-x[i-1])/(valeurfxi-valeurfximoisun);
         tableWidget_donnees_eqtnonlineaire->setItem(i,0,new QTableWidgetItem(QString::number(i)));
         tableWidget_donnees_eqtnonlineaire->setItem(i,1,new QTableWidgetItem(QString::number(x[i],'f',ndecimaux)));
@@ -2185,23 +2175,23 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
     nbrerow_tableWidget_donnees_eqtnonlineaire=i-1;
     if(fparserfx_EvalError==0 && i<nmax  && !std::isnan(x[i-1])&& !std::isnan(fparserfx.Eval(valsi)) && x[i-1]!=std::numeric_limits<double>::infinity() && x[i-1]!=-std::numeric_limits<double>::infinity()){
         tableWidget_donnees_eqtnonlineaire->setCurrentCell(i-1, 1);
-        resultatsMessage.information(this, "Résultats","La méthode converge vers x="+
+        resultatsMessage.information(this, tr("Résultats"),tr("La méthode converge vers x=")+
                                      QString::number(x[i-1],'f',ndecimaux));
         pushButton_Copier_TableauEqtNonLineaire->show();
     }else if(i>=nmax){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                                             "Peut-être que vous "
-                                 "devez changer x0 ou/et x1 ou augmenter la tolérance ou le nombre maximal d'itérations!");
+                                 "devez changer x0 ou/et x1 ou augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfx_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes!"));
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "La méthode diverge  "
-                                 ": Peut-être que vous devez changer x0 ou/et x1");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("La méthode diverge  "
+                                 ": Peut-être que vous devez changer x0 ou/et x1"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2210,15 +2200,15 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
     progressBar_eqtnonlineaire->setValue(0);
 
     double vals[1];
-    int ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
     int nmax=spinBox_nmax_eqtnonlineaire->text().toInt();
     progressBar_eqtnonlineaire->setMaximum(nmax);
     i=0;
     double x[nmax];
     x[0]=lineEdit_x0->text().toDouble();
     if(x[0]==std::numeric_limits<double>::infinity() || x[0]==-std::numeric_limits<double>::infinity()){
-        QMessageBox::critical(this, "Erreur",
-                              "La valeur de x0 dépasse les limites admissibles!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("La valeur de x0 dépasse les limites admissibles!"));
         return ;
     }
     double eps=lineEdit_tolerance_eqtnonlineaire->text().toDouble();
@@ -2230,7 +2220,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
         if (strlen(fparserfx.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f(x)",
+            errorMessage.critical(this, tr("Erreur dans f(x)"),
                                   fparserfx.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2247,7 +2237,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
         if (strlen(fparserfprimex.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f'(x)",
+            errorMessage.critical(this, tr("Erreur dans f'(x)"),
                                   fparserfprimex.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2271,9 +2261,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
     tableWidget_donnees_eqtnonlineaire->setItem(i,2,new QTableWidgetItem(QString::number(fparserfx.Eval(vals),'f',ndecimaux)));
     tableWidget_donnees_eqtnonlineaire->setItem(i,3,new QTableWidgetItem(QString::number(fparserfprimex.Eval(vals),'f',ndecimaux)));
     fparserfprimex_EvalError=fparserfprimex.EvalError();
-    EvalErrorfunHAF(fparserfprimex_EvalError,"f'(x)",x[i]);
+    EvalErrorfunHAF(fparserfprimex_EvalError,"f'(x)",x[i],ndecimaux);
     fparserfx_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i]);
+    EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i],ndecimaux);
     while (fabs(fparserfx.Eval(vals))>eps && i<nmax && fparserfx_EvalError==0 && fparserfprimex_EvalError==0)
     {
         progressBar_eqtnonlineaire->setValue(i);
@@ -2285,9 +2275,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,2,new QTableWidgetItem(QString::number(fparserfx.Eval(vals),'f',ndecimaux)));
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,3,new QTableWidgetItem(QString::number(fparserfprimex.Eval(vals),'f',ndecimaux)));
         fparserfprimex_EvalError=fparserfprimex.EvalError();
-        EvalErrorfunHAF(fparserfprimex_EvalError,"f'(x)",x[i+1]);
+        EvalErrorfunHAF(fparserfprimex_EvalError,"f'(x)",x[i+1],ndecimaux);
         fparserfx_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i+1]);
+        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i+1],ndecimaux);
         i=i+1;
         tableWidget_donnees_eqtnonlineaire->setRowCount(i+2);
     }
@@ -2297,23 +2287,23 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
     nbrerow_tableWidget_donnees_eqtnonlineaire=i;
     if(fparserfx_EvalError==0 && fparserfprimex_EvalError==0 && i<nmax && !std::isnan(x[i])&& !std::isnan(fparserfx.Eval(vals)) && x[i]!=std::numeric_limits<double>::infinity() && x[i]!=-std::numeric_limits<double>::infinity() ){
         tableWidget_donnees_eqtnonlineaire->setCurrentCell(i, 1);
-        resultatsMessage.information(this, "Résultats","La méthode converge vers x="+
+        resultatsMessage.information(this, tr("Résultats"),tr("La méthode converge vers x=")+
                                      QString::number(x[i],'f',ndecimaux));
         pushButton_Copier_TableauEqtNonLineaire->show();
     }else if(i>=nmax){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                             "Peut-être que vous devez changer x0 ou augmenter "
-                                 "la tolérance ou le nombre maximal d'itérations!");
+                                 "la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfx_EvalError!=0 || fparserfprimex_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes!"));
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "La méthode diverge  "
-                                 ": Peut-être que vous devez changer x0!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("La méthode diverge  "
+                                 ": Peut-être que vous devez changer x0!"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2322,15 +2312,15 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
     progressBar_eqtnonlineaire->setValue(0);
 
     double vals[1];
-    int ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
+    ndecimaux=spinBox_nbredecimaux_eqtnonlineaire->text().toInt();
     int nmax=spinBox_nmax_eqtnonlineaire->text().toInt();
     progressBar_eqtnonlineaire->setMaximum(nmax);
     i=0;
     double x[nmax];
     x[0]=lineEdit_x0->text().toDouble();
     if(x[0]==std::numeric_limits<double>::infinity() || x[0]==-std::numeric_limits<double>::infinity()){
-        QMessageBox::critical(this, "Erreur",
-                              "La valeur de x0 dépasse les limites admissibles!");
+        QMessageBox::critical(this, tr("Erreur"),
+                              tr("La valeur de x0 dépasse les limites admissibles!"));
         return ;
     }
     double eps=lineEdit_tolerance_eqtnonlineaire->text().toDouble();
@@ -2342,7 +2332,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
         if (strlen(fparserfx.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f(x)",
+            errorMessage.critical(this, tr("Erreur dans f(x)"),
                                   fparserfx.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2359,7 +2349,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
         if (strlen(fparsergx.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in g(x)",
+            errorMessage.critical(this, tr("Erreur dans g(x)"),
                                   fparsergx.ErrorMsg());
             errorMessage.show();
             // break ;
@@ -2383,25 +2373,25 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
     tableWidget_donnees_eqtnonlineaire->setItem(i,2,new QTableWidgetItem(QString::number(fparsergx.Eval(vals),'f',ndecimaux)));
     tableWidget_donnees_eqtnonlineaire->setItem(i,3,new QTableWidgetItem(QString::number(fparserfx.Eval(vals),'f',ndecimaux)));
     fparsergx_EvalError=fparsergx.EvalError();
-    EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i]);
+    EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i],ndecimaux);
     fparserfx_EvalError=fparserfx.EvalError();
-    EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i]);
+    EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i],ndecimaux);
     while (fabs(fparserfx.Eval(vals))>eps && i<nmax && fparserfx_EvalError==0 && fparsergx_EvalError==0)
     {
         progressBar_eqtnonlineaire->setValue(i);
         vals[0]=x[i];
         x[i+1]=fparsergx.Eval(vals);
         fparsergx_EvalError=fparsergx.EvalError();
-        EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i]);
+        EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i],ndecimaux);
         vals[0]=x[i+1];
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,0,new QTableWidgetItem(QString::number(i+1)));
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,1,new QTableWidgetItem(QString::number(x[i+1],'f',ndecimaux)));
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,2,new QTableWidgetItem(QString::number(fparsergx.Eval(vals),'f',ndecimaux)));
         tableWidget_donnees_eqtnonlineaire->setItem(i+1,3,new QTableWidgetItem(QString::number(fparserfx.Eval(vals),'f',ndecimaux)));
         fparsergx_EvalError=fparsergx.EvalError();
-        EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i+1]);
+        EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i+1],ndecimaux);
         fparserfx_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i+1]);
+        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i+1],ndecimaux);
         i=i+1;
         tableWidget_donnees_eqtnonlineaire->setRowCount(i+2);
     }
@@ -2411,23 +2401,23 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
     nbrerow_tableWidget_donnees_eqtnonlineaire=i;
     if(fparserfx_EvalError==0 && fparsergx_EvalError==0 && i<nmax && !std::isnan(x[i])&& !std::isnan(fparserfx.Eval(vals)) && x[i]!=std::numeric_limits<double>::infinity() && x[i]!=-std::numeric_limits<double>::infinity()){
         tableWidget_donnees_eqtnonlineaire->setCurrentCell(i, 1);
-        resultatsMessage.information(this, "Résultats","La méthode converge vers x="+
+        resultatsMessage.information(this, tr("Résultats"),tr("La méthode converge vers x=")+
                                      QString::number(x[i],'f',ndecimaux));
         pushButton_Copier_TableauEqtNonLineaire->show();
     }else if(i>=nmax){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Le nombre maximal d'itérations a été atteint sans "
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Le nombre maximal d'itérations a été atteint sans "
                         "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
                                             "Peut-être que vous devez changer "
-                                 "g(x) ou/et x0! (ou augmenter la tolérance ou le nombre maximal d'itérations)");
+                                 "g(x) ou/et x0! (ou augmenter la tolérance ou le nombre maximal d'itérations)"));
     }else if(fparserfx_EvalError!=0 || fparsergx_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes!"));
     }else{
-        resultatsMessage.warning(this, "Résultats",
-                                 "La méthode diverge  "
-                                 ": Peut-être que vous devez changer g(x) ou/et x0!");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("La méthode diverge  "
+                                 ": Peut-être que vous devez changer g(x) ou/et x0!"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2445,8 +2435,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         if (validx0 && validtolerance){
             hafresolutioneqtnonlineaire_ptfixe();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez x0 ou/et Tolérance");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez x0 ou/et Tolérance"));
         }
         break;
 
@@ -2454,8 +2444,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         if (validx0 && validtolerance){
             hafresolutioneqtnonlineaire_newtonraphson();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez x0 ou/et Tolérance");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez x0 ou/et Tolérance"));
         }
         break;
 
@@ -2463,8 +2453,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         if (validx0 && validx1 && validtolerance){
             hafresolutioneqtnonlineaire_secante();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez x0 ou/et x1 ou/et Tolérance");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez x0 ou/et x1 ou/et Tolérance"));
         }
         break;
 
@@ -2472,8 +2462,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         if (validx0 && validx1 && validtolerance){
             hafresolutioneqtnonlineaire_dichotomie();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez a ou/et b ou/et Tolérance");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez a ou/et b ou/et Tolérance"));
         }
         break;
 
@@ -2481,8 +2471,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         if (validx0 && validx1 && validtolerance){
             hafresolutioneqtnonlineaire_fausseposition();
         }else{
-            resultatsMessage.warning(this, "Résultats",
-                                     "Données incorrectes! Vérifiez a ou/et b ou/et Tolérance");
+            resultatsMessage.warning(this, tr("Résultats"),
+                                     tr("Données incorrectes! Vérifiez a ou/et b ou/et Tolérance"));
         }
         break;
     }
@@ -2491,7 +2481,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
 void basic_numerical_methods::plotHAF( QVector<double> x,  QVector<double> y)
 {
     customPlot->addGraph();
-    customPlot->graph(0)->setName("Confidence Band 68%");
+    customPlot->graph(0)->setName("Plot f(x)");
     customPlot->graph(0)->setData(x, y);
     customPlot->xAxis->setLabel("x");
     customPlot->yAxis->setLabel("f(x)");
@@ -2511,8 +2501,8 @@ double haff(double x,double Ks,double D,double Re)
 void basic_numerical_methods::hafafficherColebrookWhite()
 {
     if (!validDiametre || !validRuguosite || !validDebit){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes! Vérifiez Diamètre ou/et Rugosité ou/et Débit");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes! Vérifiez Diamètre ou/et Rugosité ou/et Débit"));
         return;
     }
     // Récupérations des données de l'interface GUI
@@ -2542,7 +2532,7 @@ void basic_numerical_methods::hafafficherColebrookWhite()
 
     // Calcul par la méthode de bissection (Epsilon=Ks/D)
 
-    double pi=3.1415926535897931;
+    double pi=M_PI;
     double nul=0.000001;
     double S=pi*pow(D,2)/4;
     double Umoy=Q/S;
@@ -2573,18 +2563,19 @@ void basic_numerical_methods::hafafficherColebrookWhite()
             }
         }
 
-        outputtext="Lambda est "+QString::number(c)+" avec Re égal à "+QString::number(Re);
+        outputtext=tr("Lambda est ")+QString::number(c)+tr(" avec Re égal à ")+QString::number(Re);
         lambda_textBrowser->setText(outputtext);
     }
     else
     {
         if (Re<2500)
         {
-            outputtext="L'écoulement n'est pas turbulent, donc l'équation de Colebrook-White n'est pas valable ! Re : "+QString::number(Re);
+            outputtext=tr("L'écoulement n'est pas turbulent, donc l'équation de Colebrook-White n'est pas valable ! Re : ")
+                    +QString::number(Re);
         }
         else
         {
-            outputtext="Erreur de données !!!";
+            outputtext=tr("Erreur de données !");
         }
         lambda_textBrowser->setText(outputtext);
     }
@@ -2593,8 +2584,8 @@ void basic_numerical_methods::hafafficherColebrookWhite()
 void basic_numerical_methods::hafaffichertracagefx()
 {
     if (!valida_tracage || !validb_tracage || !validdx_tracage){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes! Vérifiez a ou/et b ou/et dx");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes! Vérifiez a ou/et b ou/et dx"));
         return;
     }
     fparserfx_EvalError=0;
@@ -2606,7 +2597,7 @@ void basic_numerical_methods::hafaffichertracagefx()
         int res = fparserfx.Parse(fx.toStdString(), "x");
         if(res < 0) break;
         if (strlen(fparserfx.ErrorMsg())!=0){
-            resultatsMessage.critical(this, "Error in f(x)",
+            resultatsMessage.critical(this, tr("Erreur dans f(x)"),
                                       fparserfx.ErrorMsg());
             break ;
         }
@@ -2619,8 +2610,8 @@ void basic_numerical_methods::hafaffichertracagefx()
     n=int((b-a)/dx+1);
     if (a>=b)
     {
-        resultatsMessage.critical(this, "Erreur",
-                                  "Il faut que a<b!");
+        resultatsMessage.critical(this, tr("Erreur"),
+                                  tr("Il faut que a<b!"));
         return ;
     }
 debut1:;
@@ -2635,7 +2626,7 @@ debut1:;
         x[i]=vals[0];
         y[i]=fparserfx.Eval(vals);
         fparserfx_EvalError=fparserfx.EvalError();
-        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i]);
+        EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i],ndecimaux);
         if(fparserfx_EvalError!=0) {
             n=i;
             break;
@@ -2668,8 +2659,8 @@ debut1:;
 void basic_numerical_methods::hafafficherIntegration()
 {
     if (!valida_integ || !validb_integ){
-        resultatsMessage.warning(this, "Résultats",
-                                 "Données incorrectes! Vérifiez a ou/et b");
+        resultatsMessage.warning(this, tr("Résultats"),
+                                 tr("Données incorrectes! Vérifiez a ou/et b"));
         return;
     }
     fparserfxintegrale_EvalError=0;
@@ -2681,7 +2672,7 @@ void basic_numerical_methods::hafafficherIntegration()
         if (strlen(fparserfxintegrale.ErrorMsg())!=0){
             QMessageBox errorMessage;
             errorMessage.setFixedSize(500, 200);
-            errorMessage.critical(this, "Error in f(x)",
+            errorMessage.critical(this, tr("Erreur dans f(x)"),
                                   fparserfxintegrale.ErrorMsg());
             errorMessage.show();
             break ;
@@ -2723,8 +2714,8 @@ void basic_numerical_methods::hafafficherIntegration()
             QTableWidgetItem* item1 = tableWidget_donnees->item(i,1);
             if(!item0 || item0->text().isEmpty() || !item1 || item1->text().isEmpty())
             {
-                outputtext="Veuillez remplir svp tous le tableau des données (x et y) jusqu'à la ligne numéro :  "+QString::number(n);
-                QMessageBox::warning(this,"Erreur données !!!",outputtext);
+                outputtext=tr("Veuillez remplir svp tous le tableau des données (x et y) jusqu'à la ligne numéro :  ")+QString::number(n);
+                QMessageBox::warning(this,tr("Erreur données !"),outputtext);
                 integral_textBrowser->setText("");
                 goto fin;
             }
@@ -2747,8 +2738,8 @@ void basic_numerical_methods::hafafficherIntegration()
             b=lineEdit_b->text().toDouble();
             if (a>=b)
             {
-                QMessageBox::critical(this, "Erreur",
-                                      "Il faut que a<b!");
+                QMessageBox::critical(this, tr("Erreur"),
+                                      tr("Il faut que a<b!"));
                 return ;
             }
             n=spinBox_nbre_pts_fx->text().toInt();
@@ -2763,7 +2754,7 @@ void basic_numerical_methods::hafafficherIntegration()
                 x[i]=vals[0];
                 y[i]=fparserfxintegrale.Eval(vals);
                 fparserfxintegrale_EvalError=fparserfxintegrale.EvalError();
-                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i]);
+                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i],ndecimaux);
                 if (fparserfxintegrale_EvalError!=0) { integral_textBrowser->setText("");return;}
             }
         }
@@ -2795,7 +2786,7 @@ void basic_numerical_methods::hafafficherIntegration()
                     tableWidget_donnees->setItem(i,0,new QTableWidgetItem(QString::number(x[i])));
                     tableWidget_donnees->setItem(i,1,new QTableWidgetItem(QString::number(y[i])));
                 }
-                remplireunelinevidetableau(n);
+                remplirunelinevidetableau(n);
                 tableWidget_donnees->setItem(0,2,new QTableWidgetItem(QString::number(0)));
             }
             dx=lineEdit_dx->text().toDouble();
@@ -2814,7 +2805,9 @@ void basic_numerical_methods::hafafficherIntegration()
 
         if (radioButton_tableau_xy->isChecked())
         {
-            outputtext="L'intégrale (selon le tableau au dessus) entre "+QString::number(x[0])+" et "+QString::number(x[n-1])+" avec un pas de "+QString::number(x[1]-x[0])+" par la méthode des trapèzes est égale à "+QString::number(I);
+            outputtext=tr("L'intégrale (selon le tableau au dessus) entre ")+QString::number(x[0])+tr(" et ")
+                    +QString::number(x[n-1])+tr(" avec un pas de ")+QString::number(x[1]-x[0])
+                    +tr(" par la méthode des trapèzes est égale à ")+QString::number(I);
         }
         else if (radioButton_fx_a_b_dx->isChecked())
         {
@@ -2822,7 +2815,9 @@ void basic_numerical_methods::hafafficherIntegration()
             b=lineEdit_b->text().toDouble();
             dx=lineEdit_dx->text().toDouble();
             fx=lineEdit_fx_integ->text();
-            outputtext="L'intégrale de f(x)="+fx+" entre "+QString::number(a)+" et "+QString::number(b)+" avec un pas de "+QString::number(dx)+" par la méthode des trapèzes est égale à "+QString::number(I);
+            outputtext=tr("L'intégrale de f(x)=")+fx+tr(" entre ")+QString::number(a)+tr(" et ")
+                    +QString::number(b)+tr(" avec un pas de ")+QString::number(dx)
+                    +tr(" par la méthode des trapèzes est égale à ")+QString::number(I);
         }
         integral_textBrowser->setText(outputtext);
         tableWidget_donnees->resizeColumnsToContents();
@@ -2848,8 +2843,8 @@ void basic_numerical_methods::hafafficherIntegration()
             b=lineEdit_b->text().toDouble();
             if (a>=b)
             {
-                QMessageBox::critical(this, "Erreur",
-                                      "Il faut que a<b!");
+                QMessageBox::critical(this, tr("Erreur"),
+                                      tr("Il faut que a<b!"));
                 return ;
             }
             n=spinBox_nbre_pts_fx->text().toInt();
@@ -2864,7 +2859,7 @@ void basic_numerical_methods::hafafficherIntegration()
                 x[i]=vals[0];
                 y[i]=fparserfxintegrale.Eval(vals);
                 fparserfxintegrale_EvalError=fparserfxintegrale.EvalError();
-                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i]);
+                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i],ndecimaux);
                 if (fparserfxintegrale_EvalError!=0) {integral_textBrowser->setText("");return;}
             }
             for (i=0; i<=m; i++)
@@ -2913,7 +2908,7 @@ void basic_numerical_methods::hafafficherIntegration()
                         tableWidget_donnees->setItem(i,0,new QTableWidgetItem(QString::number(x[i])));
                         tableWidget_donnees->setItem(i,1,new QTableWidgetItem(QString::number(y[i])));
                     }
-                    remplireunelinevidetableau(n);
+                    remplirunelinevidetableau(n);
                     tableWidget_donnees->setItem(0,2,new QTableWidgetItem(QString::number(0)));
                 }
                 dx=lineEdit_dx->text().toDouble();
@@ -2930,7 +2925,9 @@ void basic_numerical_methods::hafafficherIntegration()
             }
             if (radioButton_tableau_xy->isChecked())
             {
-                outputtext="L'intégrale (selon le tableau au dessus) entre "+QString::number(x[0])+" et "+QString::number(x[n-1])+" avec un pas de "+QString::number(x[1]-x[0])+" par la méthode SIMPSON 1/3 est égale à "+QString::number(I);
+                outputtext=tr("L'intégrale (selon le tableau au dessus) entre ")+QString::number(x[0])+tr(" et ")
+                        +QString::number(x[n-1])+tr(" avec un pas de ")+QString::number(x[1]-x[0])
+                        +tr(" par la méthode SIMPSON 1/3 est égale à ")+QString::number(I);
 
             }
             else if (radioButton_fx_a_b_dx->isChecked())
@@ -2939,14 +2936,18 @@ void basic_numerical_methods::hafafficherIntegration()
                 b=lineEdit_b->text().toDouble();
                 dx=lineEdit_dx->text().toDouble();
                 fx=lineEdit_fx_integ->text();
-                outputtext="L'intégrale de f(x)="+fx+" entre "+QString::number(a)+" et "+QString::number(b)+" avec un pas de "+QString::number(dx)+" par la méthode SIMPSON 1/3 est égale à "+QString::number(I);
+                outputtext=tr("L'intégrale de f(x)=")+fx+tr(" entre ")+QString::number(a)+tr(" et ")
+                        +QString::number(b)+tr(" avec un pas de ")+QString::number(dx)+tr(" par la méthode SIMPSON 1/3 est égale à ")
+                        +QString::number(I);
             }
             integral_textBrowser->setText(outputtext);
             tableWidget_donnees->resizeColumnsToContents();
         }
         else
         {
-            QMessageBox::warning(this,"Erreur données !!!","Le nombre des x et y (Nbre des pts) n'est pas compatible avec la méthode d'intégration numérique choisie (n=2m+1 avec m=0 à l'infini).");
+            QMessageBox::warning(this,tr("Erreur données !"),
+                                 tr("Le nombre des x et y (Nbre des pts) n'est pas compatible "
+                         "avec la méthode d'intégration numérique choisie (n=2m+1 avec m=0 à l'infini)."));
             integral_textBrowser->setText("");
         }
     }
@@ -2973,8 +2974,8 @@ void basic_numerical_methods::hafafficherIntegration()
             b=lineEdit_b->text().toDouble();
             if (a>=b)
             {
-                QMessageBox::critical(this, "Erreur",
-                                      "Il faut que a<b!");
+                QMessageBox::critical(this, tr("Erreur"),
+                                      tr("Il faut que a<b!"));
                 return ;
             }
             n=spinBox_nbre_pts_fx->text().toInt();
@@ -2989,7 +2990,7 @@ void basic_numerical_methods::hafafficherIntegration()
                 x[i]=vals[0];
                 y[i]=fparserfxintegrale.Eval(vals);
                 fparserfxintegrale_EvalError=fparserfxintegrale.EvalError();
-                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i]);
+                EvalErrorfunHAF(fparserfxintegrale_EvalError,"f(x)",x[i],ndecimaux);
                 if (fparserfxintegrale_EvalError!=0) {integral_textBrowser->setText("");return;}
             }
             for (i=0; i<=m; i++)
@@ -3039,7 +3040,7 @@ void basic_numerical_methods::hafafficherIntegration()
                         tableWidget_donnees->setItem(i,0,new QTableWidgetItem(QString::number(x[i])));
                         tableWidget_donnees->setItem(i,1,new QTableWidgetItem(QString::number(y[i])));
                     }
-                    remplireunelinevidetableau(n);
+                    remplirunelinevidetableau(n);
                     tableWidget_donnees->setItem(0,2,new QTableWidgetItem(QString::number(0)));
                 }
                 dx=lineEdit_dx->text().toDouble();
@@ -3057,7 +3058,9 @@ void basic_numerical_methods::hafafficherIntegration()
 
             if (radioButton_tableau_xy->isChecked())
             {
-                outputtext="L'intégrale (selon le tableau au dessus) entre "+QString::number(x[0])+" et "+QString::number(x[n-1])+" avec un pas de "+QString::number(x[1]-x[0])+" par la méthode SIMPSON 3/8 est égale à "+QString::number(I);
+                outputtext=tr("L'intégrale (selon le tableau au dessus) entre ")+QString::number(x[0])+tr(" et ")
+                        +QString::number(x[n-1])+tr(" avec un pas de ")+QString::number(x[1]-x[0])
+                        +tr(" par la méthode SIMPSON 3/8 est égale à ")+QString::number(I);
             }
             else if (radioButton_fx_a_b_dx->isChecked())
             {
@@ -3065,14 +3068,16 @@ void basic_numerical_methods::hafafficherIntegration()
                 b=lineEdit_b->text().toDouble();
                 dx=lineEdit_dx->text().toDouble();
                 fx=lineEdit_fx_integ->text();
-                outputtext="L'intégrale de f(x)="+fx+" entre "+QString::number(a)+" et "+QString::number(b)+" avec un pas de "+QString::number(dx)+" par la méthode SIMPSON 3/8 est égale à "+QString::number(I);
+                outputtext=tr("L'intégrale de f(x)=")+fx+tr(" entre ")+QString::number(a)+tr(" et ")+QString::number(b)
+                        +tr(" avec un pas de ")+QString::number(dx)+tr(" par la méthode SIMPSON 3/8 est égale à ")+QString::number(I);
             }
             integral_textBrowser->setText(outputtext);
             tableWidget_donnees->resizeColumnsToContents();
         }
         else
         {
-            QMessageBox::warning(this,"Erreur données !!!","Le nombre des x et y (Nbre des pts) n'est pas compatible avec la méthode d'intégration numérique choisie (n=3m+4 avec m=0 à l'infini).");
+            QMessageBox::warning(this,tr("Erreur données !"),tr("Le nombre des x et y (Nbre des pts) "
+                     "n'est pas compatible avec la méthode d'intégration numérique choisie (n=3m+4 avec m=0 à l'infini)."));
             integral_textBrowser->setText("");
         }
     }
@@ -3200,7 +3205,7 @@ finboucle2:;
         spinBox_nbre_pts_fx->setSingleStep(1);
     }
 }
-void basic_numerical_methods::remplireunelinevidetableau(int n)
+void basic_numerical_methods::remplirunelinevidetableau(int n)
 {
     for (i=n; i<n+15 ;i++)
     {
@@ -3211,7 +3216,6 @@ void basic_numerical_methods::remplireunelinevidetableau(int n)
 void basic_numerical_methods::cherchernbrecolumntableau(int n)
 {
     const int m=99999; //le nbre max de lines dans le tableau x(i) et y(i).
-    int nbrecolumntableau;
     for (i=n; i<m ;i++)
     {
         QTableWidgetItem* item = tableWidget_donnees->item(i,0);
@@ -3240,16 +3244,21 @@ void basic_numerical_methods::convert()
 void basic_numerical_methods::about()
 {
     QMessageBox msgBox(this);
-    msgBox.setWindowTitle("About App");
+    msgBox.setWindowTitle(tr("À propos"));
     msgBox.setTextFormat(Qt::RichText);
-    msgBox.setText("Les programmes d'enseignement Informatique et Méthodes numériques 2020-2021 ; \n"
-                   "Ver. " APP_VERSION " sur Lunix et Windows; \n"
-                                       "("+ QString("%1").arg(BLD_DATE) +"); \n\n"
-                                                                         "HAFIANE Mohamed ; e-mail for feedback <a href=\"mailto:thakir.dz@gmail.com?subject=About%20Application%20basic_numerical_methods\">thakir.dz@gmail.com</a>"
-                                                                        " ou "
-                                                                        "<a href=\"mailto:mohammed.hafiane@univ-saida.dz?subject=About%20Application%20basic_numerical_methods\">mohammed.hafiane@univ-saida.dz</a> ;\n\n"
-                                                                         "Page web: <a href='https://sites.google.com/site/courshaf'>https://sites.google.com/site/courshaf</a> ; \n\n"
-                                                                         "Programmé avec C++ (mingw64) avec commme IDE (Qt Creator) et avec Qt Ver. " QT_VERSION_STR " ; (Function Parser for C++ v4.5.2).");
+    QString pubabout=tr("Les programmes d'enseignement Informatique et Méthodes numériques 2020-2021 ; \n")+
+                   "Ver. "+ APP_VERSION +tr(" sur Lunix et Windows; \n")+
+                                       "("+ QString("%1").arg(BLD_DATE) +tr(") ; ")+
+         "\n HAFIANE Mohamed ; e-mail for feedback <a href=\"mailto:thakir.dz@gmail.com?"+
+            "subject=About%20Application%20basic_numerical_methods\">thakir.dz@gmail.com</a>"+
+                                                                         tr(" ou ")+
+      "<a href=\"mailto:mohammed.hafiane@univ-saida.dz?subject=About%20Application%20basic_numerical_methods\">mohammed.hafiane@univ-saida.dz</a> ;\n\n"+
+                                                       tr("Page web: ")+
+"<a href='https://sites.google.com/site/courshaf'>https://sites.google.com/site/courshaf</a> ; \n\n"+
+    tr("Programmé avec C++ (mingw64) avec commme IDE (Qt Creator) et avec ")+
+            " Qt Ver. " +QT_VERSION_STR +" ; (Function Parser for C++ v4.5.2).";
+
+    msgBox.setText(pubabout);
     msgBox.exec();
 }
 

@@ -104,7 +104,13 @@ public:
     double phi,ff,b;
     double f[21][21];
     int id;
-
+    /////--HAF 29-7-2021
+    double valsa[1];
+    double valsb[1];
+    double valsr[1];
+    int nbrecolumntableau;
+    double xm;
+    int ndecimaux;
 
 private slots:
     void hafafficherColebrookWhite();
@@ -115,7 +121,7 @@ private slots:
     void hafafficherprogressBaretape1(int i, int n);
     void hafafficherprogressBaretape2(int i, int n);
     void nselonmethodechoisie();
-    void remplireunelinevidetableau(int n);
+    void remplirunelinevidetableau(int n);
     void cherchernbrecolumntableau(int n);
     void about();
     //-- CONVERT---
@@ -140,7 +146,7 @@ private slots:
     void hafresolutioneqtdifferentielle_Runge_Kutta();
     void hafresolutioneqtdifferentielle_Kutta_Merson();
     //haf 19-08-2020
-    void EvalErrorfunHAF(int fparsergx_EvalError, QString fx, double x);
+    void EvalErrorfunHAF(int fparsergx_EvalError, QString fx, double x,int ndecimaux);
     void textChangedinfunctionfx();
     void textChangedinfunctiongx();
     void textChangedinfunctionfprime();

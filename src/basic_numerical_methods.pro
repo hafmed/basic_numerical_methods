@@ -5,15 +5,15 @@
 # sudo apt install cmake
 # sudo apt-get install libgl-dev
 # sudo apt-get install qt5-default
-#------------Make *.AppImage----------------------
-# in the directorie : compilation
+#------------Make *.AppImage------on Manjaro-----1-8-2021-----------
+# in the directorie : CompilationLinux
 # chmod a+x linuxdeployqt-6-x86_64.AppImage
-# ./linuxdeployqt-6-x86_64.AppImage basic_numerical_methods -appimage -qmake=/home/hafmed/Qt5.12.8/5.12.8/gcc_64/bin/qmake
+# ./linuxdeployqt-continuous-x86_64.AppImage basic_numerical_methods -appimage -unsupported-allow-new-glibc
 #-------------------------------------------------
 
 QT       += core gui
 CONFIG += c++17
-VERSION = 3.0.9  #19-9-2020#19-5-2021#21-7-2021
+VERSION = 3.0.15  #19-9-2020#19-5-2021#1-8-2021
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 QMAKE_CXXFLAGS += -std=c++17
@@ -22,7 +22,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = basic_numerical_methods
 TEMPLATE = app
-
+DEPLOYMENT_PATH = $${TARGET}
 SOURCES += basic_numerical_methods.cpp \
     fparser.cc \
     fpoptimizer.cc \
@@ -39,8 +39,10 @@ HEADERS  += basic_numerical_methods.h \
 
 FORMS    += basic_numerical_methods.ui
 
+TRANSLATIONS = translations/qt_en.ts
+
 RESOURCES += \
-    qtresource.qrc
+    qtresource.qrc \
+    translations.qrc
 
 win32:RC_ICONS += basic_numerical_methods.ico
-

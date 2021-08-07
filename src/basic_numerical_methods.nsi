@@ -1,11 +1,11 @@
 Name "basic_numerical_methods HAFIANE Mohamed"
-OutFile "basic_numerical_methods_win64_install_3.0.9.exe"
+OutFile "basic_numerical_methods_win64_install_3.0.15.exe"
 
 Icon "basic_numerical_methods.ico"
 UninstallIcon "basic_numerical_methods.ico"
 
 
-DirText "Uninstall previous version if exist and Choose directory for installing (basic_numerical_methods) Ver 3.0.9 du 21-7-2021"
+DirText "Uninstall previous version if exist and Choose directory for installing (basic_numerical_methods) Ver 3.0.15 du 9-8-2021"
 
 InstallDir "$PROGRAMFILES\basic_numerical_methods"
 
