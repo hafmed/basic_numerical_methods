@@ -9,17 +9,26 @@
 # in the directorie : CompilationLinux
 # chmod a+x linuxdeployqt-6-x86_64.AppImage
 # ./linuxdeployqt-continuous-x86_64.AppImage basic_numerical_methods -appimage -unsupported-allow-new-glibc
-#-------------------------------------------------
+#-----------------on Manjaro-----15-5-2022--------------------------
+# sudo pacman -S make
+#-------------------------------------------------------------------
+# https://doc.qt.io/qt-6/android-publishing-to-googleplay.html
 
 QT       += core gui
 CONFIG += c++17
-VERSION = 3.0.15  #19-9-2020#19-5-2021#1-8-2021
+VERSION = 4.2.1  #19-9-2020#19-5-2021#1-8-2021#21-8-2021#15-5-2022#10-6-2022#5-7-2022
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 QMAKE_CXXFLAGS += -std=c++17
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+android:DISTFILES += \
+android-sources/AndroidManifest.xml \
+android-sources/build.gradle
 
+ANDROID_VERSION_CODE = 032421
+
+android:ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 TARGET = basic_numerical_methods
 TEMPLATE = app
 DEPLOYMENT_PATH = $${TARGET}
@@ -46,3 +55,4 @@ RESOURCES += \
     translations.qrc
 
 win32:RC_ICONS += basic_numerical_methods.ico
+

@@ -114,7 +114,7 @@ public:
 
 private slots:
     void hafafficherColebrookWhite();
-    void hafaffichertracagefx();
+    void hafaffichertracagefxgx();
     void hafafficherIntegration();
     void changervaleurpas();
     void synchronisationdeuxspinBox();
@@ -124,10 +124,11 @@ private slots:
     void remplirunelinevidetableau(int n);
     void cherchernbrecolumntableau(int n);
     void about();
+    void help();
     //-- CONVERT---
     void convert();
     //-------------
-    void plotHAF( QVector<double> x, QVector<double> y);
+    void plotHAF( QVector<double> x, QVector<double> y, QVector<double> g);
     // haf 25-7-2020
     void choixmethodeeqtnonlineaire(int id);
     void hafresolutioneqtnonlineaire();
@@ -186,7 +187,12 @@ private slots:
     void hafcalculApproximationPolynomiale();
     void hafcalculApproximationPolynomiale_Lagrange();
     void hafcalculApproximationPolynomiale_Newton();
-
+    /////21-8-2021
+    void hafclearcustomPlot();
+    /////29-5-2022
+    void tabWidgetNavigation();
+    /////10-6-2022
+    void choiseAlgoOrganProg(int id, bool checked);
 
 };
 

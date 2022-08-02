@@ -1,6 +1,7 @@
 ﻿// Les programmes Enseignement 14-15 / 19-20 /20-21 29-06-2021
 // HAFIANE Mohamed le 5-9-2020 V 1.9.0
 // HAFIANE Mohamed le 1-8-2021 V 3.0.10
+// HAFIANE Mohamed le 15-5-2022 V 3.0.17
 //#include <QDesktopWidget>
 #include "fparser.hh"
 #include <iostream>
@@ -25,7 +26,7 @@ basic_numerical_methods::basic_numerical_methods(QWidget *parent)
     : QMainWindow(parent)
 {
     setupUi(this);
-    label_version->setText("HAF-MED Ver: " APP_VERSION "");
+    //label_version->setText("HAF-MED Ver: " APP_VERSION "");
 
     // HAF le 1-9-2009 pour Kubuntu seulement-------------
     setlocale(LC_NUMERIC, "C"); //avoir comme separateur decimal le point ...
@@ -33,10 +34,11 @@ basic_numerical_methods::basic_numerical_methods(QWidget *parent)
     //tableWidget_donnees->setEditTriggers(QAbstractItemView::NoEditTriggers); //pour empecher l'edition du tableau
 
     connect(pushButton_about,SIGNAL(clicked()), this, SLOT(about()));
-    connect(pushButton_close,SIGNAL(clicked()), this, SLOT(close()));
+    connect(pushButton_help,SIGNAL(clicked()), this, SLOT(help()));
+
     connect(pushButton_Calculer_ColebrookWhite, SIGNAL(clicked()), this, SLOT(hafafficherColebrookWhite()));
     connect(pushButton_Calculer_Integration, SIGNAL(clicked()), this, SLOT(hafafficherIntegration()));
-    connect(pushButton_Calculer_tracage_fx, SIGNAL(clicked()), this, SLOT(hafaffichertracagefx()));
+    connect(pushButton_Calculer_tracage_fxgx, SIGNAL(clicked()), this, SLOT(hafaffichertracagefxgx()));
 
     connect(spinBox_nbre_pts_fx, SIGNAL(editingFinished()), this, SLOT(nselonmethodechoisie()));
     connect(spinBox_nbre_pts_fx, SIGNAL(valueChanged(int)), this, SLOT(changervaleurpas()));
@@ -140,7 +142,60 @@ basic_numerical_methods::basic_numerical_methods(QWidget *parent)
     connect(buttonGroup_methodeApproximationPolynomiale,SIGNAL(idClicked(int)), this, SLOT(choixmethodeApproximationPolynomiale(int)));
     connect(pushButton_Calculer_methodeApproximationPolynomiale, SIGNAL(clicked()), this, SLOT(hafcalculApproximationPolynomiale()));
 
+#if defined(Q_OS_ANDROID)
+    pushButton_navigation->show();
+    connect(pushButton_navigation, SIGNAL(clicked()), this, SLOT(tabWidgetNavigation()));
+#else
+    pushButton_navigation->hide();
+    //connect(pushButton_close,SIGNAL(clicked()), this, SLOT(close()));
+#endif
 
+    //-10-6-2022
+    connect(buttonGroup_AlgoProgra, SIGNAL(idToggled(int , bool )), this, SLOT(choiseAlgoOrganProg(int , bool)));
+}
+void basic_numerical_methods::choiseAlgoOrganProg(int id, bool checked)
+{
+    /////qDebug()<<"id"<<id<<"et checked="<<checked;
+    if (id==-2 && checked) {
+        stackedWidget_AffectationEntrees->setCurrentIndex(0);
+        stackedWidget_Test->setCurrentIndex(0);
+        stackedWidget_Boucle->setCurrentIndex(0);
+        stackedWidget_Boucle_Test->setCurrentIndex(0);
+        stackedWidget_Sorties->setCurrentIndex(0);
+    }else if (id==-3 && checked) {
+        stackedWidget_AffectationEntrees->setCurrentIndex(1);
+        stackedWidget_Test->setCurrentIndex(1);
+        stackedWidget_Boucle->setCurrentIndex(1);
+        stackedWidget_Boucle_Test->setCurrentIndex(1);
+        stackedWidget_Sorties->setCurrentIndex(1);
+    }else if (id==-4 && checked) {
+        stackedWidget_AffectationEntrees->setCurrentIndex(2);
+        stackedWidget_Test->setCurrentIndex(2);
+        stackedWidget_Boucle->setCurrentIndex(2);
+        stackedWidget_Boucle_Test->setCurrentIndex(2);
+        stackedWidget_Sorties->setCurrentIndex(2);
+    }
+
+}
+//-----HAF 9-6-2022-----
+void basic_numerical_methods::tabWidgetNavigation()
+{
+    int temp=tabWidget->currentIndex();
+    if (temp==tabWidget->count()-1) {
+        tabWidget->setCurrentIndex(0);
+    }else{
+        tabWidget->setCurrentIndex(temp+1);
+    }
+}
+//-----HAF 21-08-2021-----
+void basic_numerical_methods::hafclearcustomPlot()
+{
+    customPlot->clearGraphs();
+    for( int g=0; g<customPlot->graphCount(); g++ )
+    {
+        customPlot->graph(g)->data().clear();
+    }
+    customPlot->replot();
 }
 /////----15-7-2021--------
 void basic_numerical_methods::hafcalculApproximationPolynomiale()
@@ -566,9 +621,9 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Jacobi()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                            "Vérifier la condition de convergence de la méthode "
-                             "ou augmenter le nombre maximal d'itérations!."));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Vérifier la condition de convergence de la méthode "
+                                    "ou augmenter le nombre maximal d'itérations!."));
     }
     for (i = 0; i < n; i++) {
         tableWidget_Resultats_Gauss_Seidel->item(iter,i)->setBackground(Qt::red);
@@ -711,9 +766,9 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss_Seidel()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                            "Vérifier la condition de convergence de la méthode "
-                             "ou augmenter le nombre maximal d'itérations!."));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Vérifier la condition de convergence de la méthode "
+                                    "ou augmenter le nombre maximal d'itérations!."));
     }
     for (i = 0; i < n; i++) {
         tableWidget_Resultats_Gauss_Seidel->item(iter,i)->setBackground(Qt::red);
@@ -896,7 +951,7 @@ void basic_numerical_methods::hafresolutionsysteqtlineaire_Gauss()
     //*Affichage des résultats*//
     outputtext+=tr("La solution du système par la méthode du pivot de Gauss est :\n");
     for(i=0;i<n;i++){
-        outputtext+="X"+QString::number(i+1)+"="+QString::number(x[i])+"\n";
+        outputtext+="x"+QString::number(i+1)+"="+QString::number(x[i])+"   ";
     }
 
     SysteqtsLineaires_textBrowser->setText(outputtext);
@@ -1751,6 +1806,7 @@ void basic_numerical_methods::choixmethodeeqtdifferentielle(int id)
 }
 void basic_numerical_methods::choixmethodeeqtnonlineaire(int id)
 {
+    stackedWidget_nolineairEqt->setCurrentIndex(0);
     progressBar_eqtnonlineaire->setValue(0);
     tableWidget_donnees_eqtnonlineaire->clear();
     pushButton_Copier_TableauEqtNonLineaire->hide();
@@ -1940,8 +1996,8 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     }else if(i>=nmax){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                                 "Peut-être que vous devez changer a ou/et b ou augmenter la tolérance ou le nombre maximal d'itérations!"));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Peut-être que vous devez changer a ou/et b ou augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfxa_EvalError!=0 || fparserfxb_EvalError!=0 || fparserfxr_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
         resultatsMessage.warning(this, tr("Résultats"),
@@ -1949,7 +2005,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_fausseposition()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("La méthode diverge  "
-                                 ": Peut-être que vous devez changer a ou/et b"));
+                                    ": Peut-être que vous devez changer a ou/et b"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2066,9 +2122,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
     }else if(i>=nmax){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                            "Peut-être que vous devez changer a ou/et b ou "
-                                 "augmenter la tolérance ou le nombre maximal d'itérations!"));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Peut-être que vous devez changer a ou/et b ou "
+                                    "augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfxa_EvalError!=0 || fparserfxb_EvalError!=0 || fparserfxm_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
         resultatsMessage.warning(this, tr("Résultats"),
@@ -2076,7 +2132,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_dichotomie()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("La méthode diverge  "
-                                 ": Peut-être que vous devez changer a ou/et b"));
+                                    ": Peut-être que vous devez changer a ou/et b"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2181,9 +2237,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
     }else if(i>=nmax){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                                            "Peut-être que vous "
-                                 "devez changer x0 ou/et x1 ou augmenter la tolérance ou le nombre maximal d'itérations!"));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Peut-être que vous "
+                                    "devez changer x0 ou/et x1 ou augmenter la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfx_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
         resultatsMessage.warning(this, tr("Résultats"),
@@ -2191,7 +2247,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_secante()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("La méthode diverge  "
-                                 ": Peut-être que vous devez changer x0 ou/et x1"));
+                                    ": Peut-être que vous devez changer x0 ou/et x1"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2293,9 +2349,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
     }else if(i>=nmax){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                            "Peut-être que vous devez changer x0 ou augmenter "
-                                 "la tolérance ou le nombre maximal d'itérations!"));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Peut-être que vous devez changer x0 ou augmenter "
+                                    "la tolérance ou le nombre maximal d'itérations!"));
     }else if(fparserfx_EvalError!=0 || fparserfprimex_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
         resultatsMessage.warning(this, tr("Résultats"),
@@ -2303,7 +2359,7 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_newtonraphson()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("La méthode diverge  "
-                                 ": Peut-être que vous devez changer x0!"));
+                                    ": Peut-être que vous devez changer x0!"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
@@ -2407,9 +2463,9 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
     }else if(i>=nmax){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Le nombre maximal d'itérations a été atteint sans "
-                        "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
-                                            "Peut-être que vous devez changer "
-                                 "g(x) ou/et x0! (ou augmenter la tolérance ou le nombre maximal d'itérations)"));
+                                    "qu'aucune solution satisfaisante la tolérance n'a pu être trouvée :\n"
+                                    "Peut-être que vous devez changer "
+                                    "g(x) ou/et x0! (ou augmenter la tolérance ou le nombre maximal d'itérations)"));
     }else if(fparserfx_EvalError!=0 || fparsergx_EvalError!=0){
         tableWidget_donnees_eqtnonlineaire->clear();
         resultatsMessage.warning(this, tr("Résultats"),
@@ -2417,12 +2473,13 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire_ptfixe()
     }else{
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("La méthode diverge  "
-                                 ": Peut-être que vous devez changer g(x) ou/et x0!"));
+                                    ": Peut-être que vous devez changer g(x) ou/et x0!"));
     }
     tableWidget_donnees_eqtnonlineaire->scrollToBottom();
 }
 void basic_numerical_methods::hafresolutioneqtnonlineaire()
 {
+    stackedWidget_nolineairEqt->setCurrentIndex(1);
     fparserfx_EvalError=0;
     fparsergx_EvalError=0;
     fparserfprimex_EvalError=0;
@@ -2477,20 +2534,65 @@ void basic_numerical_methods::hafresolutioneqtnonlineaire()
         break;
     }
 }
-//--------------------------HAF 17-05-2015----------------------
-void basic_numerical_methods::plotHAF( QVector<double> x,  QVector<double> y)
+//--------------------------HAF 17-05-2015-----21-8-2021---------------
+void basic_numerical_methods::plotHAF( QVector<double> x,  QVector<double> y,  QVector<double> g)
 {
+    //-----HAF 21-8-2021-----
+    // Détermination Max et Mini de y and g
+    double highy,lowy;
+    highy=y[0];
+    lowy=y[0];
+
+    for(int i = 1; i < n; i++)
+    {
+        if(y[i]>highy){
+            highy=y[i];
+        }else{
+            if(y[i]<lowy){
+                lowy=y[i];
+            }
+        }
+    }
+    for(int i = 1; i < n; i++)
+    {
+        if(g[i]>highy){
+            highy=g[i];
+        }else{
+            if(g[i]<lowy){
+                lowy=g[i];
+            }
+        }
+    }
+    //-----------------------
     customPlot->addGraph();
-    customPlot->graph(0)->setName("Plot f(x)");
+    customPlot->graph(0)->setName("f(x)");
     customPlot->graph(0)->setData(x, y);
+    customPlot->addGraph();
+    customPlot->graph(1)->setName("g(x)");
+    customPlot->graph(1)->setData(x, g);
     customPlot->xAxis->setLabel("x");
-    customPlot->yAxis->setLabel("f(x)");
+    customPlot->yAxis->setLabel("f(x) & g(x)");
     customPlot->xAxis->setRange(lineEdit_a_tracage_fx->text().toDouble(), lineEdit_b_tracage_fx->text().toDouble());
+
+    customPlot->yAxis->setRange(lowy-abs(0.5*lowy),highy+abs(0.25*highy));
+
     customPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, Qt::red, Qt::white, 7));
-    customPlot->graph(0)->rescaleAxes();
+    customPlot->graph(0)->setPen(QPen(Qt::red));
+    //customPlot->graph(0)->rescaleAxes();
+    customPlot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, Qt::blue, Qt::white, 7));
+    customPlot->graph(1)->setPen(QPen(Qt::blue));
+    //customPlot->graph(1)->rescaleAxes();
     customPlot->axisRect()->setupFullAxesBox();
-    customPlot->legend->setVisible(false);
+    customPlot->legend->setVisible(true);
     customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    customPlot->xAxis2->setVisible(true);
+    customPlot->xAxis2->setTickLabels(false);
+    customPlot->yAxis2->setVisible(true);
+    customPlot->yAxis2->setTickLabels(false);
+    // make left and bottom axes always transfer their ranges to right and top axes:
+    connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->xAxis2, SLOT(setRange(QCPRange)));
+    connect(customPlot->yAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->yAxis2, SLOT(setRange(QCPRange)));
+
     customPlot->replot();
 }
 //--------------------------------------------------------------
@@ -2581,14 +2683,16 @@ void basic_numerical_methods::hafafficherColebrookWhite()
     }
 
 }
-void basic_numerical_methods::hafaffichertracagefx()
+void basic_numerical_methods::hafaffichertracagefxgx()
 {
     if (!valida_tracage || !validb_tracage || !validdx_tracage){
         resultatsMessage.warning(this, tr("Résultats"),
                                  tr("Données incorrectes! Vérifiez a ou/et b ou/et dx"));
+        hafclearcustomPlot();
         return;
     }
     fparserfx_EvalError=0;
+    fparsergx_EvalError=0;
     textBrowser_resultats_lineEdit_tracage_fx->setText("");
     customPlot->clearGraphs();
     while(true)
@@ -2599,10 +2703,29 @@ void basic_numerical_methods::hafaffichertracagefx()
         if (strlen(fparserfx.ErrorMsg())!=0){
             resultatsMessage.critical(this, tr("Erreur dans f(x)"),
                                       fparserfx.ErrorMsg());
-            break ;
+            //-----HAF 21-08-2021-----
+            hafclearcustomPlot();
+            //------------------------
+            return ;
         }
         std::cout << std::string(res+7, ' ') << "^\n"
                   << fparserfx.ErrorMsg() << "\n\n";
+    }
+    while(true)
+    {
+        gx=lineEdit_tracage_gx->text();
+        int res = fparsergx.Parse(gx.toStdString(), "x");
+        if(res < 0) break;
+        if (strlen(fparsergx.ErrorMsg())!=0){
+            resultatsMessage.critical(this, tr("Erreur dans g(x)"),
+                                      fparsergx.ErrorMsg());
+            //-----HAF 21-08-2021-----
+            hafclearcustomPlot();
+            //------------------------
+            return ;
+        }
+        std::cout << std::string(res+7, ' ') << "^\n"
+                  << fparsergx.ErrorMsg() << "\n\n";
     }
     double a=lineEdit_a_tracage_fx->text().toDouble();
     double b=lineEdit_b_tracage_fx->text().toDouble();
@@ -2612,11 +2735,13 @@ void basic_numerical_methods::hafaffichertracagefx()
     {
         resultatsMessage.critical(this, tr("Erreur"),
                                   tr("Il faut que a<b!"));
+        hafclearcustomPlot();
         return ;
     }
-debut1:;
+
     QVector<double> x(n);
     QVector<double> y(n);
+    QVector<double> g(n);
     double vals[1];
     outputtext="";
     i=0;
@@ -2625,35 +2750,41 @@ debut1:;
         vals[0]=a+i*dx;
         x[i]=vals[0];
         y[i]=fparserfx.Eval(vals);
+        g[i]=fparsergx.Eval(vals);
         fparserfx_EvalError=fparserfx.EvalError();
         EvalErrorfunHAF(fparserfx_EvalError,"f(x)",x[i],ndecimaux);
         if(fparserfx_EvalError!=0) {
             n=i;
-            break;
+            //-----HAF 21-08-2021-----
+            hafclearcustomPlot();
+            //------------------------
+            return;
         }
-        outputtext=outputtext+"f("+QString::number(x[i])+") = "+QString::number(y[i])+"\n";
+        fparsergx_EvalError=fparsergx.EvalError();
+        EvalErrorfunHAF(fparsergx_EvalError,"g(x)",x[i],ndecimaux);
+        if(fparsergx_EvalError!=0) {
+            n=i;
+            //-----HAF 21-08-2021-----
+            hafclearcustomPlot();
+            //------------------------
+            return;
+        }
+        outputtext+="f("+QString::number(x[i])+") =\t"+QString::number(y[i])+"\t";
+        outputtext+="g("+QString::number(x[i])+") =\t"+QString::number(g[i])+"\n";
     }
-    if (x[n-1]<b && fparserfx_EvalError==0)
-    {
-        n=n+1;
-        goto debut1;
-    }
-    for( int g=0; g<customPlot->graphCount(); g++ )
-    {
-        customPlot->graph(g)->data().clear();
-    }
+
     customPlot->replot();
     textBrowser_resultats_lineEdit_tracage_fx->setText(outputtext);
     QVector<double> xnew(n);
     QVector<double> ynew(n);
+    QVector<double> gnew(n);
     for(i=0; i<n; i++)
     {
         xnew[i]=x[i];
         ynew[i]=y[i];
+        gnew[i]=g[i];
     }
-    plotHAF(xnew,ynew);
-
-
+    plotHAF(xnew,ynew,gnew);
 
 }
 void basic_numerical_methods::hafafficherIntegration()
@@ -2947,7 +3078,7 @@ void basic_numerical_methods::hafafficherIntegration()
         {
             QMessageBox::warning(this,tr("Erreur données !"),
                                  tr("Le nombre des x et y (Nbre des pts) n'est pas compatible "
-                         "avec la méthode d'intégration numérique choisie (n=2m+1 avec m=0 à l'infini)."));
+                                    "avec la méthode d'intégration numérique choisie (n=2m+1 avec m=0 à l'infini)."));
             integral_textBrowser->setText("");
         }
     }
@@ -3077,7 +3208,7 @@ void basic_numerical_methods::hafafficherIntegration()
         else
         {
             QMessageBox::warning(this,tr("Erreur données !"),tr("Le nombre des x et y (Nbre des pts) "
-                     "n'est pas compatible avec la méthode d'intégration numérique choisie (n=3m+4 avec m=0 à l'infini)."));
+                                                                "n'est pas compatible avec la méthode d'intégration numérique choisie (n=3m+4 avec m=0 à l'infini)."));
             integral_textBrowser->setText("");
         }
     }
@@ -3241,24 +3372,53 @@ void basic_numerical_methods::convert()
 
     textBrowser_decimal->setText(QString::number(decimal));
 }
+/// for Android 1-6-2022
+/// 1-7-2022
+void basic_numerical_methods::help()
+{
+    QString link = "https://sites.google.com/site/courshaf";
+    QDesktopServices::openUrl(QUrl(link));
+}
+#if defined(Q_OS_ANDROID)
 void basic_numerical_methods::about()
 {
     QMessageBox msgBox(this);
     msgBox.setWindowTitle(tr("À propos"));
     msgBox.setTextFormat(Qt::RichText);
-    QString pubabout=tr("Les programmes d'enseignement Informatique et Méthodes numériques 2020-2021 ; \n")+
-                   "Ver. "+ APP_VERSION +tr(" sur Lunix et Windows; \n")+
-                                       "("+ QString("%1").arg(BLD_DATE) +tr(") ; ")+
-         "\n HAFIANE Mohamed ; e-mail for feedback <a href=\"mailto:thakir.dz@gmail.com?"+
+    QString pubabout=tr("Les programmes d'enseignement Informatique et Méthodes numériques 2021-2022 ; \n")+
+            "Ver. "+ APP_VERSION +tr(" sur Linux, Windows et Android ; \n")+
+            "("+ QString("%1").arg(BLD_DATE) +tr(") ; ")+
+            "\n HAFIANE Mohamed ; e-mail for feedback: thakir.dz@gmail.com"+
+            tr(" ou ")+
+            "mohammed.hafiane@univ-saida.dz;\n\n"+
+            tr("Page web : ")+
+            "https://sites.google.com/site/courshaf; \n\n"+
+            tr("Programmé avec C++ (mingw64) avec comme IDE (Qt Creator) et avec ")+
+            " Qt Ver. " +QT_VERSION_STR +" ; (Function Parser for C++ v4.5.2).\n\n"+
+            tr("Vous pouvez utiliser :")+"\n"+"^ * / + -\npow(x,5)\npi\nsqrt\nsin cos tan "+
+            "cot\nasin acos atan\nsinh cosh tanh\nasinh acosh atanh\nlog log10 exp\nabs ; .....";
+    msgBox.setText(pubabout);
+    msgBox.exec();
+}
+#else
+void basic_numerical_methods::about()
+{
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(tr("À propos"));
+    msgBox.setTextFormat(Qt::RichText);
+    QString pubabout=tr("Les programmes d'enseignement Informatique et Méthodes numériques 2021-2022 ; \n")+
+            "Ver. "+ APP_VERSION +tr(" sur Linux, Windows et Android ; \n")+
+            "("+ QString("%1").arg(BLD_DATE) +tr(") ; ")+
+            tr("\n HAFIANE Mohamed ; e-mail pour (feedback) <a href=\"mailto:thakir.dz@gmail.com?")+
             "subject=About%20Application%20basic_numerical_methods\">thakir.dz@gmail.com</a>"+
-                                                                         tr(" ou ")+
-      "<a href=\"mailto:mohammed.hafiane@univ-saida.dz?subject=About%20Application%20basic_numerical_methods\">mohammed.hafiane@univ-saida.dz</a> ;\n\n"+
-                                                       tr("Page web: ")+
-"<a href='https://sites.google.com/site/courshaf'>https://sites.google.com/site/courshaf</a> ; \n\n"+
-    tr("Programmé avec C++ (mingw64) avec commme IDE (Qt Creator) et avec ")+
-            " Qt Ver. " +QT_VERSION_STR +" ; (Function Parser for C++ v4.5.2).";
+            tr(" ou ")+
+            "<a href=\"mailto:mohammed.hafiane@univ-saida.dz?subject=About%20Application%20basic_numerical_methods\">mohammed.hafiane@univ-saida.dz</a>"+tr(" ;\n\n")+
+            tr("Page web : ")+
+            "<a href='https://sites.google.com/site/courshaf'>https://sites.google.com/site/courshaf</a>"+tr(" ;\n\n")+
+            tr("Programmé avec C++ (mingw64) avec comme IDE (Qt Creator) et avec ")+
+            " Qt Ver. " +QT_VERSION_STR +"; (Function Parser for C++ v4.5.2).";
 
     msgBox.setText(pubabout);
     msgBox.exec();
 }
-
+#endif

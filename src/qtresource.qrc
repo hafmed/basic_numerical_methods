@@ -21,5 +21,26 @@
         <file>icons/Jacobi.png</file>
         <file>icons/Lagrange.png</file>
         <file>icons/Newton.bmp</file>
+        <file>icons/Affectation_Algo.png</file>
+        <file>icons/Affectation_Organi.png</file>
+        <file>icons/Affectation_ProgMatlab.png</file>
+        <file>icons/Affectation_ProgCpp.png</file>
+        <file>icons/test_ProgCpp.png</file>
+        <file>icons/test_ProgMatlab.png</file>
+        <file>icons/test_Organi.png</file>
+        <file>icons/Test_Algo.png</file>
+        <file>icons/Boucle_ProgCpp.png</file>
+        <file>icons/Boucle_ProgMatlab.png</file>
+        <file>icons/Boucle_Organi.png</file>
+        <file>icons/Boucle_Algo.png</file>
+        <file>icons/BoucleTest_ProgCpp.png</file>
+        <file>icons/BoucleTest_ProgMatlab.png</file>
+        <file>icons/BoucleTest_Organi.png</file>
+        <file>icons/BoucleTest_Algo.png</file>
+        <file>icons/Sorties_ProgCpp.png</file>
+        <file>icons/Sorties_ProgMatlab.png</file>
+        <file>icons/Sorties_Organi.png</file>
+        <file>icons/Sorties_Algo.png</file>
+        <file>icons/warning.png</file>
     </qresource>
 </RCC>

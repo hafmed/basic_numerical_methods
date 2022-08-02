@@ -1,26 +1,26 @@
 Name "basic_numerical_methods HAFIANE Mohamed"
-OutFile "basic_numerical_methods_win64_install_3.0.15.exe"
+OutFile "basic_numerical_methods_win64_install_4.2.1.exe"
 
 Icon "basic_numerical_methods.ico"
 UninstallIcon "basic_numerical_methods.ico"
 
 
-DirText "Uninstall previous version if exist and Choose directory for installing (basic_numerical_methods) Ver 3.0.15 du 9-8-2021"
+DirText "Uninstall previous version if exist and Choose directory for installing (basic_numerical_methods) Ver 4.2.1/1-7-2022"
 
 InstallDir "$PROGRAMFILES\basic_numerical_methods"
 
 Section "Install"
   SetOutPath $INSTDIR
-  File "C:\Qt6\6.1.1\mingw81_64\bin\libgcc_s_seh-1.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\libstdc++-6.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\libwinpthread-1.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\Qt6Core.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\Qt6Gui.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\Qt6PrintSupport.dll"
-  File "C:\Qt6\6.1.1\mingw81_64\bin\Qt6Widgets.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\libgcc_s_seh-1.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\libstdc++-6.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\libwinpthread-1.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\Qt6Core.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\Qt6Gui.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\Qt6PrintSupport.dll"
+  File "C:\Qt\6.3.1\mingw_64\bin\Qt6Widgets.dll"
 CreateDirectory $INSTDIR\platforms
 SetOutPath $INSTDIR\platforms
-  File "C:\Qt6\6.1.1\mingw81_64\plugins\platforms\qwindows.dll"
+  File "C:\Qt\6.3.1\mingw_64\plugins\platforms\qwindows.dll"
 SetOutPath $INSTDIR 
  File "..\CompilationWin\release\basic_numerical_methods.exe"
  File "basic_numerical_methods.ico"
@@ -62,4 +62,4 @@ Delete "$INSTDIR\basic_numerical_methods.exe"
 Delete "$INSTDIR\basic_numerical_methods.ico"
 Delete "$INSTDIR\uninstall.exe"
 RmDir "$INSTDIR"
-SectionEnd
+SectionEnd
