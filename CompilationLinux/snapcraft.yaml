@@ -1,0 +1,28 @@
+name: basicnumericalmethods
+version: '3.0.9'
+#version-script: git describe --abbrev=1 --tags
+summary: basic numerical methods
+description: |
+  basic_numerical_methods is an open source desktop application for basic numerical methods
+  intended for use in both research and education.
+base: core18
+grade: stable
+confinement: strict
+
+apps:
+  basicnumericalmethods:
+    command: desktop-launch $SNAP/bin/basic_numerical_methods
+    extensions:
+      - kde-neon
+    plugs:
+      - home
+      - opengl
+      - network
+      - network-bind
+
+parts:
+  tablexplore:
+    plugin: python
+    source: .
+    stage-packages:
+        - xsel

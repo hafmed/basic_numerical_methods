@@ -1,0 +1,29 @@
+name: basicnumericalmethods
+version: '0.3.0'
+#version-script: git describe --abbrev=1 --tags
+summary: data plotting and analysis package
+description: |
+  tablexplore is an open source desktop application for data analysis and plotting
+  intended for use in both research and education. The program allows quick
+  visualization of data, table manipulation tools and supports large data tables.
+base: core18
+grade: stable
+confinement: strict
+
+apps:
+  tablexplore:
+    command: desktop-launch $SNAP/bin/basicnumericalmethods
+    extensions:
+      - kde-neon
+    plugs:
+      - home
+      - opengl
+      - network
+      - network-bind
+
+parts:
+  tablexplore:
+    plugin: python
+    source: .
+    stage-packages:
+        - xsel
