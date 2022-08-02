@@ -1,6 +1,8 @@
 # basic_numerical_methods
 A Qt application for basic numerical methods.
 
+Android version is in : https://play.google.com/store/apps/details?id=org.hafsoftdz.basic_numerical_methods
+
 ![image](https://user-images.githubusercontent.com/45327274/128609544-467553bf-8ff1-4e65-a197-cbac02710120.png)
 ![image](https://user-images.githubusercontent.com/45327274/128609622-f3787d3e-8ceb-46aa-befb-75d648969996.png)
 ![image](https://user-images.githubusercontent.com/45327274/128609639-944460b2-7788-4f79-ba44-1c4b4bca5fe3.png)
