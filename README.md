@@ -11,7 +11,7 @@ A practical tool to foresee the result of calculus exercises.
 
 -Compute roots of nonlinear equations ;
 
--Solving systems of linear equations ;
+-Solving systems of linear and nonlinear equations ;
 
 -Polynomial approximation calculator ;
 
